@@ -1,0 +1,60 @@
+@import '../../../styles/colors.scss';
+@import '../../../styles/mixins/breakpoints.scss';
+.handheld {
+    gap: 8px;
+    padding: 24px;
+    max-width: 784px;
+    min-height: 650px;
+    max-height: 1200px;
+    background-color: $color-device-primary;
+    border-radius: 12px;
+    border-left: 6px solid $color-black;
+    h1 {
+        color: $color-device-primary-dark;
+        font-size: 16px;
+    } 
+    @include mobile {
+        padding: 8px;
+        gap: 8px;
+        width: 100%;
+        height: 100%;
+        max-width: unset;
+        min-height: unset;
+        max-height: unset;
+        border-left: unset;
+        border-radius: 0px;
+        @media (max-height: 650px) {
+            gap: 4px;
+            h1 {
+                display: none;
+            }
+        }
+    }
+    // horizontal handheld variant
+    &--horizontal {
+        gap: 0px;
+        max-width: 1100px;
+        padding: 16px;
+        min-height: unset;
+        .handheld__input {
+            max-width: unset;
+        }
+        h1 {
+            justify-content: center;
+        }
+        @include tablet {
+            padding: 8px;
+        }
+    }
+    &__screen {
+        padding: 8px;
+        border-radius: 12px;
+        background-color: black;
+        @include mobile {
+            padding: 2px;
+        }
+    }
+    &__input {
+        max-width: 576px;
+    }
+}

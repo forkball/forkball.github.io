@@ -1,0 +1,14 @@
+@import "../../../styles/colors.scss";
+
+.panel-social {
+    a {
+        color: $color-panel-accent
+    }
+    a.selected {
+        color: $color-device-secondary;
+    }
+    #cheeky-email {
+        font-size: 16px;
+        line-height: unset;
+    }
+}

@@ -1,0 +1,147 @@
+@import '../../../../styles/colors.scss';
+@import '../../../../styles/mixins/breakpoints.scss';
+
+.handheld-screen {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  background-color: $color-black;
+  margin: unset;
+  width: 576px;
+  height: 480px;
+  padding: 16px;
+  gap: 24px;
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+  
+  @include tablet {
+    width: 100%;
+    height: 400px; 
+    max-width: unset;
+  }
+
+  @include mobile {
+    width: 100%;
+    min-height: 400px;
+    padding: 8px;
+    gap: 8px;
+    margin: 8px;
+    @media (max-height: 650px) and (max-width: 500px) {
+      min-height: unset;
+    }
+  }
+  // smaller mobile
+  @media (max-width: 500px) {
+    max-height: 320px;
+  }
+
+  // smallest mobile
+  @media (max-width: 320px) {
+    min-height: unset;
+  }
+
+  &__interface {
+    background-color: $color-panel-primary;
+    width: 432px;
+    height: 480px;
+    position: relative;
+    
+    @include tablet {
+      width: 360px;
+      height: 400px;
+    }
+
+    // smaller mobile
+    @media (max-width: 500px) {
+      width: 100%;
+      max-width: 380px;
+    }
+    
+    &__menu {
+      background-color: $color-panel-accent;
+      padding: 16px;
+      &__items {
+        color: $color-white;
+        &__item--selected {
+          color: $color-device-secondary;
+        }
+      }
+    }
+  
+    // to do, move panel styles to individual components
+    img {
+      width: 150px; 
+      height: 150px;
+      aspect-ratio: 1/1;
+      -webkit-transform: scaleX(-1);
+      transform: scaleX(-1);
+      @include mobile {
+        width: 125px;
+        height: 125px;
+      }
+      // smaller mobile
+      @media (max-width: 500px) {
+        width: 100%;
+        height: unset;
+      }
+    }
+    
+    &__content {
+      padding: 0px 8px 8px 8px;
+      @include tablet {
+        padding-bottom: 24px;
+      }
+      &__heading {
+        margin-bottom: 8px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid $color-panel-accent;
+        p {
+          line-height: unset;
+        }
+      }
+      &__body {
+          hyphens: auto;
+          margin-bottom: 48px;
+          &__section {
+            margin-bottom: 16px;
+            h2 {
+              margin-bottom: 8px;
+            }
+        }
+      }
+      &__page {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: $color-panel-accent;
+        p {
+          line-height: unset;
+          color: $color-white;
+        }
+      }
+    }
+  }
+}
+
+#landing-panel {
+  // smaller mobile
+  @media (max-width: 500px) {
+    flex-direction: column;
+  }
+}
