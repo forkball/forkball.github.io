@@ -38,7 +38,10 @@ const BioPanel = forwardRef(({ image }, ref) => {
             development.
           </p>
           <span className="scroll-anchor mb-4" />
-          <p>I&apos;m currently employed at a Shopify doing general software engineering</p>
+          <p>
+            I&apos;m currently employed at Shopify, working on payments across the frontend and
+            backend.
+          </p>
           <span className="scroll-anchor mb-4" />
           <p>
             I also like comics, music, film, rock climbing, karate, and of course, playing physical
