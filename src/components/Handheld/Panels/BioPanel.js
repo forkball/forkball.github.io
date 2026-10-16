@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 
-const BioPanel = forwardRef(({ image }, ref) => {
+const BioPanel = forwardRef(({ image, showHint }, ref) => {
   return (
     <div
       ref={ref}
@@ -48,6 +48,7 @@ const BioPanel = forwardRef(({ image }, ref) => {
         </div>
       </div>
       <div className="handheld-screen__interface__content__page flex mt-auto">
+        {showHint && <p className="page-hint">PRESS START</p>}
         <p className="ml-auto">1/2</p>
       </div>
     </div>
@@ -56,6 +57,11 @@ const BioPanel = forwardRef(({ image }, ref) => {
 
 BioPanel.propTypes = {
   image: PropTypes.string.isRequired,
+  showHint: PropTypes.bool,
+};
+
+BioPanel.defaultProps = {
+  showHint: false,
 };
 
 export default BioPanel;

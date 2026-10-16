@@ -16,6 +16,7 @@ const Screen = forwardRef(
       menuControls,
       // perhaps create a panel state
       socialPanelIndex,
+      showHint,
     },
     ref,
   ) => {
@@ -35,10 +36,10 @@ const Screen = forwardRef(
           switch (panel) {
             // overview panel
             case 1:
-              return <BriefPanel ref={ref} />;
+              return <BriefPanel ref={ref} showHint={showHint} />;
             // landing panel
             default:
-              return <BioPanel ref={ref} image={image} />;
+              return <BioPanel ref={ref} image={image} showHint={showHint} />;
           }
       }
     };
@@ -88,6 +89,7 @@ Screen.propTypes = {
   menuIndex: PropTypes.number,
   menuControls: PropTypes.arrayOf(PropTypes.func),
   socialPanelIndex: PropTypes.number,
+  showHint: PropTypes.bool,
 };
 
 Screen.defaultProps = {
@@ -107,6 +109,7 @@ Screen.defaultProps = {
     },
   ],
   socialPanelIndex: 0,
+  showHint: false,
 };
 
 export default Screen;

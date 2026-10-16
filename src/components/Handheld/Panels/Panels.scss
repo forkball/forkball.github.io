@@ -12,3 +12,21 @@
         line-height: unset;
     }
 }
+
+// blinking hint pointing first-time visitors to the menu
+.page-hint {
+    padding-left: 8px;
+    animation: page-hint-blink 1s steps(1, end) infinite;
+}
+
+@keyframes page-hint-blink {
+    50% {
+        opacity: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .page-hint {
+        animation: none;
+    }
+}
