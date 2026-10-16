@@ -33,10 +33,7 @@ const BioPanel = forwardRef(({ image }, ref) => {
             2021.
           </p>
           <span className="scroll-anchor mb-4" />
-          <p>
-            I was previously employed at Else Labs (an IoT startup) doing fullstack software
-            development.
-          </p>
+          <p>I was previously at Else Labs (an IoT startup), doing fullstack development.</p>
           <span className="scroll-anchor mb-4" />
           <p>
             I&apos;ve been at Shopify since 2024, doing fullstack development on payment methods.
