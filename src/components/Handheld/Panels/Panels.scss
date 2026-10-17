@@ -13,10 +13,8 @@
     }
 }
 
-// control hints shown in the page bar, e.g. "A OPEN  B BACK"
+// control hint shown in the page bar, e.g. "A OPEN"
 .page-hint {
-    display: flex;
-    gap: 14px;
     padding-left: 8px;
 }
 
