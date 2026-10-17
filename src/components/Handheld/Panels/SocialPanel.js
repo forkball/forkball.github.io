@@ -1,5 +1,6 @@
 import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
+import PageBar from './PageBar';
 import './Panels.scss';
 
 const SocialPanel = forwardRef(({ socialPanelIndex }, ref) => {
@@ -60,10 +61,14 @@ const SocialPanel = forwardRef(({ socialPanelIndex }, ref) => {
           </div>
         </div>
       </div>
-      <div className="handheld-screen__interface__content__page flex mt-auto">
-        {/* <p>{scrollDirection}</p> */}
-        <p className="ml-auto">1/1</p>
-      </div>
+      <PageBar
+        page={1}
+        pageCount={1}
+        hints={[
+          ['A', 'OPEN'],
+          ['B', 'BACK'],
+        ]}
+      />
     </div>
   );
 });

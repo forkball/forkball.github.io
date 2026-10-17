@@ -16,6 +16,7 @@ const Screen = forwardRef(
       menuControls,
       // perhaps create a panel state
       socialPanelIndex,
+      showHint,
     },
     ref,
   ) => {
@@ -23,6 +24,22 @@ const Screen = forwardRef(
       // eslint-disable-next-line no-param-reassign
       ref.current.scrollTop = 0;
     }, [panel]);
+
+    // whether the panel has more text below, for the down arrow hint
+    const [canScrollDown, setCanScrollDown] = useState(false);
+    useEffect(() => {
+      const content = ref.current;
+      if (!content) return undefined;
+      const update = () =>
+        setCanScrollDown(content.scrollTop + content.clientHeight < content.scrollHeight - 4);
+      update();
+      content.addEventListener('scroll', update);
+      window.addEventListener('resize', update);
+      return () => {
+        content.removeEventListener('scroll', update);
+        window.removeEventListener('resize', update);
+      };
+    }, [panel, panelSet]);
 
     const renderPanel = () => {
       switch (panelSet) {
@@ -35,16 +52,16 @@ const Screen = forwardRef(
           switch (panel) {
             // overview panel
             case 1:
-              return <BriefPanel ref={ref} />;
+              return <BriefPanel ref={ref} showHint={showHint} more={canScrollDown} />;
             // landing panel
             default:
-              return <BioPanel ref={ref} image={image} />;
+              return <BioPanel ref={ref} image={image} showHint={showHint} more={canScrollDown} />;
           }
       }
     };
     const renderMenu = () => {
       return showMenu ? (
-        <div className="handheld-screen__interface__menu absolute h-full w-1/2 right-0 top-0">
+        <div className="handheld-screen__interface__menu absolute flex flex-col h-full w-1/2 right-0 top-0">
           <ol className="handheld-screen__interface__menu__items">
             <li
               className={`handheld-screen__interface__menu__items__item${
@@ -65,6 +82,10 @@ const Screen = forwardRef(
               </button>
             </li>
           </ol>
+          <div className="handheld-screen__interface__menu__hints mt-auto">
+            <p>A SELECT</p>
+            <p>B BACK</p>
+          </div>
         </div>
       ) : null;
     };
@@ -88,6 +109,7 @@ Screen.propTypes = {
   menuIndex: PropTypes.number,
   menuControls: PropTypes.arrayOf(PropTypes.func),
   socialPanelIndex: PropTypes.number,
+  showHint: PropTypes.bool,
 };
 
 Screen.defaultProps = {
@@ -107,6 +129,7 @@ Screen.defaultProps = {
     },
   ],
   socialPanelIndex: 0,
+  showHint: false,
 };
 
 export default Screen;

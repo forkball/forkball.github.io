@@ -72,13 +72,37 @@
       max-width: 380px;
     }
     
+    // classic RPG menu box: double border and a blinking cursor on the selected item
     &__menu {
-      background-color: $color-panel-accent;
+      background-color: $color-white;
+      border: 4px double $color-panel-accent;
       padding: 16px;
       &__items {
-        color: $color-white;
-        &__item--selected {
-          color: $color-device-secondary;
+        color: $color-panel-accent;
+        li {
+          position: relative;
+          padding-left: 20px;
+        }
+        &__item--selected::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 50%;
+          transform: translateY(-55%);
+          width: 10px;
+          height: 12px;
+          background-color: $color-panel-accent;
+          clip-path: polygon(0 0, 100% 50%, 0 100%);
+          animation: pixel-blink 1s steps(1, end) infinite;
+        }
+      }
+      &__hints {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        color: $color-panel-accent;
+        p {
+          line-height: unset;
         }
       }
     }

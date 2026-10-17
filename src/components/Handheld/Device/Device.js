@@ -22,6 +22,7 @@ function Device({ classes }) {
   const [socialPanelIndex, setSocialPanelIndex] = useState(0);
   const [windowHeight, setWindowHeight] = useState(0);
   const [windowWidth, setWindowWidth] = useState(0);
+  const [hasOpenedMenu, setHasOpenedMenu] = useState(false);
 
   // divide the screen into sections for better readability in scrolling
   const setSections = () => {
@@ -48,13 +49,15 @@ function Device({ classes }) {
   // handle vertical scroll behaviour
   const scroll = (direction) => {
     let sections = screenSections[panel];
-    if (screenSections[panel].length === 0) sections = setSections()[panel];
+    if (screenSections[panel].length === 0) sections = setSections();
     // scroll down
     if (direction === 1) {
-      if (sectionPosition + 1 < sections.length) setSectionPosition(sectionPosition + 1);
-      sections[sectionPosition + 1].scrollIntoView({
-        behavior: 'smooth',
-      });
+      if (sectionPosition + 1 < sections.length) {
+        setSectionPosition(sectionPosition + 1);
+        sections[sectionPosition + 1].scrollIntoView({
+          behavior: 'smooth',
+        });
+      }
     }
     // scroll up
     else if (direction === -1) {
@@ -120,6 +123,7 @@ function Device({ classes }) {
   // show navigation menu on start press
   const onStartPress = () => {
     setShowMenu(!showMenu);
+    setHasOpenedMenu(true);
   };
 
   // interact ui, selects items
@@ -146,9 +150,45 @@ function Device({ classes }) {
     }
   };
 
+  // back out: close the menu, or leave socials for the about pages
   const onBButtonPress = () => {
     if (showMenu) setShowMenu(false);
+    else if (panelSet === 1) {
+      setPanelSet(0);
+      setMenuIndex(0);
+      setPanel(0);
+      setSectionPosition(0);
+    }
   };
+
+  // map keyboard keys to the device buttons
+  const handleKeyDown = (event) => {
+    if (event.altKey || event.ctrlKey || event.metaKey) return;
+    // links and menu items on the screen itself, not the device's own buttons
+    const onScreenControl =
+      ['BUTTON', 'A'].includes(event.target.tagName) && event.target.closest('.handheld-screen');
+    const keyHandlers = {
+      ArrowUp: onUpPress,
+      ArrowDown: onDownPress,
+      ArrowLeft: onLeftPress,
+      ArrowRight: onRightPress,
+      // enter acts as A where A does something, otherwise opens the menu
+      Enter: showMenu || panelSet === 1 ? () => onAButtonPress() : onStartPress,
+      Escape: showMenu ? onBButtonPress : onStartPress,
+      Backspace: onBButtonPress,
+    };
+    // let enter activate a focused on-screen menu item or link natively
+    if (event.key === 'Enter' && onScreenControl) return;
+    const handler = keyHandlers[event.key];
+    if (!handler) return;
+    event.preventDefault();
+    handler();
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  });
 
   const menuControls = [
     () => {
@@ -175,6 +215,7 @@ function Device({ classes }) {
           menuIndex={menuIndex}
           menuControls={menuControls}
           socialPanelIndex={socialPanelIndex}
+          showHint={!hasOpenedMenu}
         />
       </div>
       <div className="handheld__input flex flex-col w-full h-full self-center">
@@ -215,6 +256,7 @@ function Device({ classes }) {
               menuIndex={menuIndex}
               menuControls={menuControls}
               socialPanelIndex={socialPanelIndex}
+              showHint={!hasOpenedMenu}
             />
           }
         />

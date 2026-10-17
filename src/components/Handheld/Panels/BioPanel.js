@@ -1,7 +1,8 @@
 import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
+import PageBar from './PageBar';
 
-const BioPanel = forwardRef(({ image }, ref) => {
+const BioPanel = forwardRef(({ image, showHint, more }, ref) => {
   return (
     <div
       ref={ref}
@@ -33,12 +34,11 @@ const BioPanel = forwardRef(({ image }, ref) => {
             2021.
           </p>
           <span className="scroll-anchor mb-4" />
-          <p>
-            I was previously employed at a Else Labs (an IoT startup) doing fullstack software
-            development.
-          </p>
+          <p>I was previously at Else Labs (an IoT startup), doing fullstack development.</p>
           <span className="scroll-anchor mb-4" />
-          <p>I&apos;m currently employed at a Shopify doing general software engineering</p>
+          <p>
+            I&apos;ve been at Shopify since 2024, doing fullstack development on payment methods.
+          </p>
           <span className="scroll-anchor mb-4" />
           <p>
             I also like comics, music, film, rock climbing, karate, and of course, playing physical
@@ -48,15 +48,26 @@ const BioPanel = forwardRef(({ image }, ref) => {
           <p>Feel free to connect through my social platforms!</p>
         </div>
       </div>
-      <div className="handheld-screen__interface__content__page flex mt-auto">
-        <p className="ml-auto">1/2</p>
-      </div>
+      <PageBar
+        page={1}
+        pageCount={2}
+        hints={[showHint ? ['PRESS', 'START'] : ['START', 'MENU']]}
+        blinkHints={showHint}
+        more={more}
+      />
     </div>
   );
 });
 
 BioPanel.propTypes = {
   image: PropTypes.string.isRequired,
+  showHint: PropTypes.bool,
+  more: PropTypes.bool,
+};
+
+BioPanel.defaultProps = {
+  showHint: false,
+  more: false,
 };
 
 export default BioPanel;

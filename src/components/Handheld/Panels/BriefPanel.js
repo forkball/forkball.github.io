@@ -1,6 +1,8 @@
 import React, { forwardRef } from 'react';
+import PropTypes from 'prop-types';
+import PageBar from './PageBar';
 
-const BriefPanel = forwardRef((_, ref) => {
+const BriefPanel = forwardRef(({ showHint, more }, ref) => {
   return (
     <div
       ref={ref}
@@ -45,11 +47,25 @@ const BriefPanel = forwardRef((_, ref) => {
           </ol>
         </div>
       </div>
-      <div className="handheld-screen__interface__content__page flex mt-auto">
-        <p className="ml-auto">2/2</p>
-      </div>
+      <PageBar
+        page={2}
+        pageCount={2}
+        hints={[showHint ? ['PRESS', 'START'] : ['START', 'MENU']]}
+        blinkHints={showHint}
+        more={more}
+      />
     </div>
   );
 });
+
+BriefPanel.propTypes = {
+  showHint: PropTypes.bool,
+  more: PropTypes.bool,
+};
+
+BriefPanel.defaultProps = {
+  showHint: false,
+  more: false,
+};
 
 export default BriefPanel;
