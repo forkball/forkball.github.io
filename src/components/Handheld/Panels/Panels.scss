@@ -13,9 +13,48 @@
     }
 }
 
-// blinking hint pointing first-time visitors to the menu
+// control hints shown in the page bar
 .page-hint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
     padding-left: 8px;
+}
+
+// mirrors the device's yellow buttons so hints point at the real controls
+.button-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px 8px 2px;
+    border-radius: 9999px;
+    font-size: 0.75em;
+    line-height: 1;
+    background-color: $color-device-secondary;
+    color: $color-device-primary-dark;
+    box-shadow: 0 2px 0 $color-device-primary-shadow;
+}
+
+.button-chip--round {
+    width: 1.9em;
+    height: 1.9em;
+    padding: 2px 0 0;
+}
+
+// the button chip alone carries the hint on the narrowest screens
+@media (max-width: 360px) {
+    .page-hint__word {
+        display: none;
+    }
+}
+
+.page-bar__count {
+    gap: 2px;
+    padding-right: 4px;
+}
+
+// blinking hint pointing first-time visitors to the menu
+.page-hint--blink {
     animation: page-hint-blink 1s steps(1, end) infinite;
 }
 
@@ -26,7 +65,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .page-hint {
+    .page-hint--blink {
         animation: none;
     }
 }

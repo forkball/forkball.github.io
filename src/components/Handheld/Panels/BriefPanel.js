@@ -1,5 +1,7 @@
 import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
+import ButtonChip from './ButtonChip';
+import PageBar from './PageBar';
 
 const BriefPanel = forwardRef(({ showHint }, ref) => {
   return (
@@ -46,10 +48,17 @@ const BriefPanel = forwardRef(({ showHint }, ref) => {
           </ol>
         </div>
       </div>
-      <div className="handheld-screen__interface__content__page flex mt-auto">
-        {showHint && <p className="page-hint">PRESS START</p>}
-        <p className="ml-auto">2/2</p>
-      </div>
+      <PageBar
+        page={2}
+        pageCount={2}
+        hint={
+          showHint && (
+            <p className="page-hint page-hint--blink">
+              <span className="page-hint__word">PRESS</span> <ButtonChip label="START" />
+            </p>
+          )
+        }
+      />
     </div>
   );
 });

@@ -81,6 +81,10 @@
           color: $color-device-secondary;
         }
       }
+      &__hint {
+        color: $color-white;
+        line-height: unset;
+      }
     }
   
     // to do, move panel styles to individual components

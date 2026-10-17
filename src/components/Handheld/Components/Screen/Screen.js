@@ -3,7 +3,7 @@ import React, { forwardRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import image from '../../../../assets/me.png';
 import './Screen.scss';
-import { BioPanel, BriefPanel, SocialPanel } from '../../Panels';
+import { BioPanel, BriefPanel, ButtonChip, SocialPanel } from '../../Panels';
 
 const Screen = forwardRef(
   (
@@ -45,7 +45,7 @@ const Screen = forwardRef(
     };
     const renderMenu = () => {
       return showMenu ? (
-        <div className="handheld-screen__interface__menu absolute h-full w-1/2 right-0 top-0">
+        <div className="handheld-screen__interface__menu absolute flex flex-col h-full w-1/2 right-0 top-0">
           <ol className="handheld-screen__interface__menu__items">
             <li
               className={`handheld-screen__interface__menu__items__item${
@@ -66,6 +66,9 @@ const Screen = forwardRef(
               </button>
             </li>
           </ol>
+          <p className="handheld-screen__interface__menu__hint page-hint mt-auto">
+            <ButtonChip label="A" round /> SELECT
+          </p>
         </div>
       ) : null;
     };

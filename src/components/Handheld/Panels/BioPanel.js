@@ -1,5 +1,7 @@
 import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
+import ButtonChip from './ButtonChip';
+import PageBar from './PageBar';
 
 const BioPanel = forwardRef(({ image, showHint }, ref) => {
   return (
@@ -47,10 +49,17 @@ const BioPanel = forwardRef(({ image, showHint }, ref) => {
           <p>Feel free to connect through my social platforms!</p>
         </div>
       </div>
-      <div className="handheld-screen__interface__content__page flex mt-auto">
-        {showHint && <p className="page-hint">PRESS START</p>}
-        <p className="ml-auto">1/2</p>
-      </div>
+      <PageBar
+        page={1}
+        pageCount={2}
+        hint={
+          showHint && (
+            <p className="page-hint page-hint--blink">
+              <span className="page-hint__word">PRESS</span> <ButtonChip label="START" />
+            </p>
+          )
+        }
+      />
     </div>
   );
 });
