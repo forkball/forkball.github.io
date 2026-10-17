@@ -157,7 +157,9 @@ function Device({ classes }) {
   // map keyboard keys to the device buttons
   const handleKeyDown = (event) => {
     if (event.altKey || event.ctrlKey || event.metaKey) return;
-    const onButton = ['BUTTON', 'A'].includes(event.target.tagName);
+    // links and menu items on the screen itself, not the device's own buttons
+    const onScreenControl =
+      ['BUTTON', 'A'].includes(event.target.tagName) && event.target.closest('.handheld-screen');
     const keyHandlers = {
       ArrowUp: onUpPress,
       ArrowDown: onDownPress,
@@ -168,8 +170,8 @@ function Device({ classes }) {
       Escape: showMenu ? onBButtonPress : onStartPress,
       Backspace: onBButtonPress,
     };
-    // let enter activate a focused button or link natively
-    if (event.key === 'Enter' && onButton) return;
+    // let enter activate a focused on-screen menu item or link natively
+    if (event.key === 'Enter' && onScreenControl) return;
     const handler = keyHandlers[event.key];
     if (!handler) return;
     event.preventDefault();
