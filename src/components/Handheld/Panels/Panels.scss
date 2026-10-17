@@ -82,8 +82,7 @@
 @media (prefers-reduced-motion: reduce) {
     .page-hint--blink,
     .page-bar__next,
-    .page-bar__more,
-    .handheld-screen__interface__menu__items__item--selected::before {
+    .page-bar__more {
         animation: none;
     }
 }

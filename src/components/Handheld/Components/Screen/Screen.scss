@@ -72,11 +72,19 @@
       max-width: 380px;
     }
     
-    // classic RPG menu box: double border and a blinking cursor on the selected item
+    // classic RPG menu box: double border and a cursor on the selected item
     &__menu {
       background-color: $color-white;
       border: 4px double $color-panel-accent;
       padding: 16px;
+      // leave the narrow phone menu as much room as possible for the text
+      @media (max-width: 500px) {
+        padding: 12px 8px;
+      }
+      // on the smallest phones half the screen can't fit SOCIALS, so widen it
+      @media (max-width: 340px) {
+        width: 60% !important;
+      }
       &__items {
         color: $color-panel-accent;
         li {
@@ -93,7 +101,6 @@
           height: 12px;
           background-color: $color-panel-accent;
           clip-path: polygon(0 0, 100% 50%, 0 100%);
-          animation: pixel-blink 1s steps(1, end) infinite;
         }
       }
       &__hints {
@@ -101,7 +108,11 @@
         flex-direction: column;
         gap: 10px;
         color: $color-panel-accent;
+        // smaller than the items and never wrapped, so each hint fits the
+        // half-width menu on a phone
+        white-space: nowrap;
         p {
+          font-size: 14px;
           line-height: unset;
         }
       }

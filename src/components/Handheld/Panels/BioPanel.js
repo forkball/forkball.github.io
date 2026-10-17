@@ -51,7 +51,7 @@ const BioPanel = forwardRef(({ image, showHint, more }, ref) => {
       <PageBar
         page={1}
         pageCount={2}
-        hints={[showHint ? ['PRESS', 'START'] : ['START', 'MENU']]}
+        hints={showHint ? [['PRESS', 'START']] : []}
         blinkHints={showHint}
         more={more}
       />
