@@ -1,6 +1,5 @@
 import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
-import ButtonChip from './ButtonChip';
 import PageBar from './PageBar';
 import './Panels.scss';
 
@@ -65,11 +64,10 @@ const SocialPanel = forwardRef(({ socialPanelIndex }, ref) => {
       <PageBar
         page={1}
         pageCount={1}
-        hint={
-          <p className="page-hint">
-            <ButtonChip label="A" round /> OPEN
-          </p>
-        }
+        hints={[
+          ['A', 'OPEN'],
+          ['B', 'BACK'],
+        ]}
       />
     </div>
   );

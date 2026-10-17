@@ -150,8 +150,15 @@ function Device({ classes }) {
     }
   };
 
+  // back out: close the menu, or leave socials for the about pages
   const onBButtonPress = () => {
     if (showMenu) setShowMenu(false);
+    else if (panelSet === 1) {
+      setPanelSet(0);
+      setMenuIndex(0);
+      setPanel(0);
+      setSectionPosition(0);
+    }
   };
 
   // map keyboard keys to the device buttons

@@ -1,9 +1,8 @@
 import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
-import ButtonChip from './ButtonChip';
 import PageBar from './PageBar';
 
-const BriefPanel = forwardRef(({ showHint }, ref) => {
+const BriefPanel = forwardRef(({ showHint, more }, ref) => {
   return (
     <div
       ref={ref}
@@ -51,13 +50,9 @@ const BriefPanel = forwardRef(({ showHint }, ref) => {
       <PageBar
         page={2}
         pageCount={2}
-        hint={
-          showHint && (
-            <p className="page-hint page-hint--blink">
-              <span className="page-hint__word">PRESS</span> <ButtonChip label="START" />
-            </p>
-          )
-        }
+        hints={[showHint ? ['PRESS', 'START'] : ['START', 'MENU']]}
+        blinkHints={showHint}
+        more={more}
       />
     </div>
   );
@@ -65,10 +60,12 @@ const BriefPanel = forwardRef(({ showHint }, ref) => {
 
 BriefPanel.propTypes = {
   showHint: PropTypes.bool,
+  more: PropTypes.bool,
 };
 
 BriefPanel.defaultProps = {
   showHint: false,
+  more: false,
 };
 
 export default BriefPanel;

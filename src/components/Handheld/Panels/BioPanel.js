@@ -1,9 +1,8 @@
 import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
-import ButtonChip from './ButtonChip';
 import PageBar from './PageBar';
 
-const BioPanel = forwardRef(({ image, showHint }, ref) => {
+const BioPanel = forwardRef(({ image, showHint, more }, ref) => {
   return (
     <div
       ref={ref}
@@ -52,13 +51,9 @@ const BioPanel = forwardRef(({ image, showHint }, ref) => {
       <PageBar
         page={1}
         pageCount={2}
-        hint={
-          showHint && (
-            <p className="page-hint page-hint--blink">
-              <span className="page-hint__word">PRESS</span> <ButtonChip label="START" />
-            </p>
-          )
-        }
+        hints={[showHint ? ['PRESS', 'START'] : ['START', 'MENU']]}
+        blinkHints={showHint}
+        more={more}
       />
     </div>
   );
@@ -67,10 +62,12 @@ const BioPanel = forwardRef(({ image, showHint }, ref) => {
 BioPanel.propTypes = {
   image: PropTypes.string.isRequired,
   showHint: PropTypes.bool,
+  more: PropTypes.bool,
 };
 
 BioPanel.defaultProps = {
   showHint: false,
+  more: false,
 };
 
 export default BioPanel;

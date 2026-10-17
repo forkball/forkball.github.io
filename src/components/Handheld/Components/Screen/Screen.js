@@ -3,7 +3,7 @@ import React, { forwardRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import image from '../../../../assets/me.png';
 import './Screen.scss';
-import { BioPanel, BriefPanel, ButtonChip, SocialPanel } from '../../Panels';
+import { BioPanel, BriefPanel, SocialPanel } from '../../Panels';
 
 const Screen = forwardRef(
   (
@@ -25,6 +25,22 @@ const Screen = forwardRef(
       ref.current.scrollTop = 0;
     }, [panel]);
 
+    // whether the panel has more text below, for the down arrow hint
+    const [canScrollDown, setCanScrollDown] = useState(false);
+    useEffect(() => {
+      const content = ref.current;
+      if (!content) return undefined;
+      const update = () =>
+        setCanScrollDown(content.scrollTop + content.clientHeight < content.scrollHeight - 4);
+      update();
+      content.addEventListener('scroll', update);
+      window.addEventListener('resize', update);
+      return () => {
+        content.removeEventListener('scroll', update);
+        window.removeEventListener('resize', update);
+      };
+    }, [panel, panelSet]);
+
     const renderPanel = () => {
       switch (panelSet) {
         case 1:
@@ -36,10 +52,10 @@ const Screen = forwardRef(
           switch (panel) {
             // overview panel
             case 1:
-              return <BriefPanel ref={ref} showHint={showHint} />;
+              return <BriefPanel ref={ref} showHint={showHint} more={canScrollDown} />;
             // landing panel
             default:
-              return <BioPanel ref={ref} image={image} showHint={showHint} />;
+              return <BioPanel ref={ref} image={image} showHint={showHint} more={canScrollDown} />;
           }
       }
     };
@@ -66,9 +82,10 @@ const Screen = forwardRef(
               </button>
             </li>
           </ol>
-          <p className="handheld-screen__interface__menu__hint page-hint mt-auto">
-            <ButtonChip label="A" round /> SELECT
-          </p>
+          <div className="handheld-screen__interface__menu__hints mt-auto">
+            <p>A SELECT</p>
+            <p>B BACK</p>
+          </div>
         </div>
       ) : null;
     };
