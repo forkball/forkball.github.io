@@ -1,0 +1,154 @@
+@import "../../../../styles/mixins/breakpoints.scss";
+@import '../../../../styles/colors.scss';
+
+.handheld-input {
+  width: 576px;
+  margin-bottom: 8px;
+  &--horizontal {
+    width: 1128px;
+    margin-bottom: 0px;
+    .handheld-input__navigation {
+      margin-bottom: 0px;
+    }
+  }
+  @include tablet {
+    width: 100%;
+  }
+  .button-wrapper {
+    border-radius: 9999px;
+    background-color: $color-device-primary-shadow;
+    position: relative;
+    button {
+      position: absolute;
+      border-radius: 9999px;
+      background-color: $color-device-secondary;
+      color: $color-device-primary-dark;
+      font-weight: 600;
+      &:hover {
+        background-color: $color-device-secondary-dark;
+      }
+    }
+  }
+  &__embedded-screen {
+    padding: 0px 16px 0px 16px;
+    &__screen {
+      margin: 16px;
+      @include tablet {
+        margin: 8px;
+      }
+    }
+    @include tablet {
+      padding: 0px 8px 0px 8px;
+    }
+  }
+  &__navigation {
+    background-color: $color-device-primary-dark;
+    max-width: 50%;
+    border-radius: 56px;
+    padding: 8px 48px 8px 48px;
+    font-size: 12px;
+    @include tablet {
+      max-width: unset;
+      margin-bottom: 8px;
+      font-size: 10px;
+    }
+    @include tablet {
+      @media (max-height: 650px) {
+        margin-bottom: 4px;
+      }
+    }
+    
+    &__controls {
+      .button-wrapper {
+        width: 76px;
+        height: 36px;
+        @include tablet {
+          width: 60px;
+          height: 36px;
+        }
+        // smallest mobile
+        @include mobile  {
+          width: 52px;
+          height: 28px;
+        }
+
+        button {
+          left: 2px;
+          top: 0px;
+          width: 72px;
+          height: 32px;
+          position: relative;
+          @include tablet {
+            width: 56px;
+            height: 32px;
+          }
+          // smallest mobile
+          @include mobile  {
+            width: 48px;
+            height: 24px;
+          }
+        }
+      } 
+    }
+  }
+  &__panel {
+    &__controls {
+        width: 210px;
+        height: 210px;
+        border-radius: 56px;
+        background-color: $color-device-primary-dark;
+        padding: 16px;
+
+        @include tablet {
+          width: 168px;
+          height: 168px;
+        }
+        @include mobile {
+          width: 140px;
+          height: 140px;
+          padding: 8px;
+        }
+
+        &--a,&--b,&--c,&--d {
+          place-self: center;
+          font-size: 24px;
+          .button-wrapper {
+            width: 76px;
+            height: 76px;
+            @include tablet {
+              width: 60px;
+              height: 60px;
+            }
+            // smallest mobile
+            @include mobile  {
+              width: 52px;
+              height: 52px;
+              @media (max-height: 650px) {
+                width: 48px;
+                height: 48px;
+              }
+            }
+            button {
+              left: 2px;
+              top: 0px;
+              width: 72px;
+              height: 72px;
+              @include tablet {
+                width: 56px;
+                height: 56px;
+              }
+              // smallest mobile
+              @include mobile  {
+                width: 48px;
+                height: 48px;
+                @media (max-height: 650px) {
+                  width: 44px;
+                  height: 44px;
+                }
+              }
+            }
+          } 
+        }
+    }
+  }
+}
