@@ -2,20 +2,19 @@ import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Screen } from '../Components';
 import Input from '../Components/Input';
+import { SECTIONS } from '../../../constants';
 import './Device.scss';
 
-const NUMBER_OF_PANELS = 1;
 const NUMBER_OF_SOCIAL_LINKS = 3;
 const MINIMUM_HORIZONTAL_VIEW_HEIGHT = 900;
 const MAXIMUM_HORIZONTAL_VIEW_WIDTH = 728;
-const MAXIMUM_MENU_INDEX = 1;
+const MAXIMUM_MENU_INDEX = Object.keys(SECTIONS).length - 1;
 function Device({ classes }) {
   const panelRef = useRef(null);
 
-  const [screenSections, setScreenSections] = useState({ 0: [], 1: [] });
+  const [screenSections, setScreenSections] = useState({});
   const [sectionPosition, setSectionPosition] = useState(0);
 
-  const [panel, setPanel] = useState(0);
   const [showMenu, setShowMenu] = useState(false);
   const [menuIndex, setMenuIndex] = useState(0);
   const [panelSet, setPanelSet] = useState(0);
@@ -26,30 +25,18 @@ function Device({ classes }) {
 
   // divide the screen into sections for better readability in scrolling
   const setSections = () => {
-    const elements =
-      panel === 0
-        ? document.getElementsByClassName('scroll-anchor')
-        : document.getElementsByClassName('scroll-anchor');
-
-    // set section state
-    if (panel === 0)
-      setScreenSections({
-        ...screenSections,
-        [panel]: elements,
-      });
-    if (panel === 1)
-      setScreenSections({
-        ...screenSections,
-        [panel]: elements,
-      });
-
+    const elements = document.getElementsByClassName('scroll-anchor');
+    setScreenSections({
+      ...screenSections,
+      [panelSet]: elements,
+    });
     return elements;
   };
 
   // handle vertical scroll behaviour
   const scroll = (direction) => {
-    let sections = screenSections[panel];
-    if (screenSections[panel].length === 0) sections = setSections();
+    let sections = screenSections[panelSet];
+    if (!sections || sections.length === 0) sections = setSections();
     // scroll down
     if (direction === 1) {
       if (sectionPosition + 1 < sections.length) {
@@ -70,29 +57,23 @@ function Device({ classes }) {
     }
   };
 
-  // navigate left
-  const onLeftPress = () => {
-    if (!showMenu) {
-      setSectionPosition(0);
-      if (panel > 0) setPanel(panel - 1);
-      else setPanel(NUMBER_OF_PANELS);
-    }
-  };
+  // every section is a single page, so left and right have nothing to flip
+  const onLeftPress = () => {};
+  const onRightPress = () => {};
 
-  // navigate right
-  const onRightPress = () => {
-    if (!showMenu) {
-      setSectionPosition(0);
-      if (panel < NUMBER_OF_PANELS) setPanel(panel + 1);
-      else setPanel(0);
-    }
+  // switch to a section from the top
+  const openSection = (section) => {
+    setPanelSet(section);
+    setMenuIndex(section);
+    setSectionPosition(0);
+    setShowMenu(false);
   };
 
   // navigate up
   const onUpPress = () => {
     if (!showMenu) {
       switch (panelSet) {
-        case 1:
+        case SECTIONS.SOCIALS:
           if (socialPanelIndex > 0) setSocialPanelIndex(socialPanelIndex - 1);
           break;
         default:
@@ -108,7 +89,7 @@ function Device({ classes }) {
   const onDownPress = () => {
     if (!showMenu) {
       switch (panelSet) {
-        case 1:
+        case SECTIONS.SOCIALS:
           if (socialPanelIndex < NUMBER_OF_SOCIAL_LINKS) setSocialPanelIndex(socialPanelIndex + 1);
           break;
         default:
@@ -129,15 +110,11 @@ function Device({ classes }) {
   // interact ui, selects items
   const onAButtonPress = (index = -1) => {
     if (showMenu) {
-      let mI = menuIndex;
-      if (index >= 0) mI = index;
-      setPanelSet(mI);
-      setShowMenu(false);
-      setPanel(0);
+      openSection(index >= 0 ? index : menuIndex);
     } else {
       // handle a button behavior based on panel set
       switch (panelSet) {
-        case 1: {
+        case SECTIONS.SOCIALS: {
           const anchors = document
             .getElementsByClassName('panel-social')[0]
             .getElementsByTagName('a');
@@ -150,15 +127,10 @@ function Device({ classes }) {
     }
   };
 
-  // back out: close the menu, or leave socials for the about pages
+  // back out: close the menu, or return to the about section
   const onBButtonPress = () => {
     if (showMenu) setShowMenu(false);
-    else if (panelSet === 1) {
-      setPanelSet(0);
-      setMenuIndex(0);
-      setPanel(0);
-      setSectionPosition(0);
-    }
+    else if (panelSet !== SECTIONS.ABOUT) openSection(SECTIONS.ABOUT);
   };
 
   // map keyboard keys to the device buttons
@@ -170,10 +142,8 @@ function Device({ classes }) {
     const keyHandlers = {
       ArrowUp: onUpPress,
       ArrowDown: onDownPress,
-      ArrowLeft: onLeftPress,
-      ArrowRight: onRightPress,
       // enter acts as A where A does something, otherwise opens the menu
-      Enter: showMenu || panelSet === 1 ? () => onAButtonPress() : onStartPress,
+      Enter: showMenu || panelSet === SECTIONS.SOCIALS ? () => onAButtonPress() : onStartPress,
       Escape: showMenu ? onBButtonPress : onStartPress,
       Backspace: onBButtonPress,
     };
@@ -190,16 +160,7 @@ function Device({ classes }) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   });
 
-  const menuControls = [
-    () => {
-      setMenuIndex(0);
-      onAButtonPress(0);
-    },
-    () => {
-      setMenuIndex(1);
-      onAButtonPress(1);
-    },
-  ];
+  const menuControls = Object.values(SECTIONS).map((section) => () => openSection(section));
 
   const renderVerticalDevice = () => (
     <div className={`handheld flex flex-col shadow-lg ${classes}`}>
@@ -209,7 +170,6 @@ function Device({ classes }) {
       <div className="handheld__screen flex justify-center">
         <Screen
           ref={panelRef}
-          panel={panel}
           panelSet={panelSet}
           showMenu={showMenu}
           menuIndex={menuIndex}
@@ -250,7 +210,6 @@ function Device({ classes }) {
           Screen={
             <Screen
               ref={panelRef}
-              panel={panel}
               panelSet={panelSet}
               showMenu={showMenu}
               menuIndex={menuIndex}
@@ -266,7 +225,7 @@ function Device({ classes }) {
 
   useEffect(() => {
     setSections();
-  }, [panel]);
+  }, [panelSet]);
 
   useEffect(() => {
     setWindowHeight(window.innerHeight);
