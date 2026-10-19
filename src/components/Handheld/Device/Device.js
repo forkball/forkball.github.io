@@ -127,10 +127,9 @@ function Device({ classes }) {
     }
   };
 
-  // back out: close the menu, or return to the about section
+  // back out of the menu; outside it B does nothing
   const onBButtonPress = () => {
     if (showMenu) setShowMenu(false);
-    else if (panelSet !== SECTIONS.ABOUT) openSection(SECTIONS.ABOUT);
   };
 
   // map keyboard keys to the device buttons
