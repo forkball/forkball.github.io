@@ -127,6 +127,10 @@
       height: 160px;
       aspect-ratio: 1/1;
       image-rendering: pixelated;
+      // solid frame matching the divider below the header; content-box keeps
+      // the art itself at its whole-number size
+      box-sizing: content-box;
+      border: 2px solid $color-panel-accent;
       -webkit-transform: scaleX(-1);
       transform: scaleX(-1);
       @media (max-width: 500px) {
