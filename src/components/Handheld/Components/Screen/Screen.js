@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { forwardRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import image from '../../../../assets/me.png';
+import image from '../../../../assets/me-sprite.png';
 import './Screen.scss';
 import { BioPanel, BriefPanel, SocialPanel } from '../../Panels';
 import { SECTIONS } from '../../../../constants';
@@ -90,6 +90,13 @@ const Screen = forwardRef(
       <div className={`handheld-screen flex flex-col justify-center items-center ${className}`}>
         <div className="handheld-screen__interface flex flex-col h-full font-pixel relative">
           {renderPanel()}
+          {/* Pokédex-style frame: a double rule with square rivets in the corners */}
+          <div className="dex-frame" aria-hidden="true">
+            <i />
+            <i />
+            <i />
+            <i />
+          </div>
           {renderMenu()}
         </div>
       </div>

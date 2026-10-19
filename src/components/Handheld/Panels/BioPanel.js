@@ -1,6 +1,7 @@
 import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import PageBar from './PageBar';
+import StuddedDivider from './StuddedDivider';
 
 const BioPanel = forwardRef(({ image, showHint, more }, ref) => {
   return (
@@ -8,19 +9,27 @@ const BioPanel = forwardRef(({ image, showHint, more }, ref) => {
       ref={ref}
       className="handheld-screen__interface__content flex flex-col h-full w-full overflow-y-auto"
     >
-      <div
-        id="landing-panel"
-        className="handheld-screen__interface__content__heading flex flex-row"
-      >
-        <div className="flex flex-col mb-4">
-          <span className="scroll-anchor mb-4" />
-          <h2>NAME/</h2>
-          <p id="name">EROS DI PEDE</p>
-          <h2>TITLE/</h2>
-          <p>SOFTWARE ENGINEER</p>
+      <span className="scroll-anchor" />
+      {/* laid out like a Pokédex entry: sprite and number, then name, title and stats */}
+      <div id="landing-panel" className="dex-entry">
+        <div className="dex-entry__portrait">
+          <img src={image} alt="me" />
+          <p className="dex-entry__number">No.001</p>
         </div>
-        <img src={image} alt="me" />
+        <div className="dex-entry__info">
+          <p id="name">EROS DI PEDE</p>
+          <p>SOFTWARE ENGINEER</p>
+          <p className="dex-entry__stat">
+            <span>CO.</span>
+            <span>SHOPIFY</span>
+          </p>
+          <p className="dex-entry__stat">
+            <span>SINCE</span>
+            <span>2024</span>
+          </p>
+        </div>
       </div>
+      <StuddedDivider />
       <div className="handheld-screen__interface__content__body flex flex-col">
         <div className="handheld-screen__content__body flex flex-col text-left hyphens">
           <span className="scroll-anchor mb-2" />
