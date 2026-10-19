@@ -10,11 +10,10 @@ const BioPanel = forwardRef(({ image, showHint, more }, ref) => {
       className="handheld-screen__interface__content flex flex-col h-full w-full overflow-y-auto"
     >
       <span className="scroll-anchor" />
-      {/* laid out like a Pokédex entry: sprite and number, then name, title and stats */}
+      {/* laid out like a Pokédex entry: sprite, then name, title and stats */}
       <div id="landing-panel" className="dex-entry">
         <div className="dex-entry__portrait">
           <img src={image} alt="me" />
-          <p className="dex-entry__number">No.001</p>
         </div>
         <div className="dex-entry__info">
           {/* keep the surname together when the name wraps */}

@@ -164,8 +164,7 @@ $page-bar-height: 28px;
   }
 }
 
-// Pokédex entry header: sprite and number on the left, name, title and
-// stats on the right
+// Pokédex entry header: sprite on the left, name, title and stats on the right
 .dex-entry {
   display: flex;
   align-items: flex-end;
@@ -192,9 +191,6 @@ $page-bar-height: 28px;
         height: 72px;
       }
     }
-  }
-  &__number {
-    margin-top: 4px;
   }
   &__info {
     flex: 1;
