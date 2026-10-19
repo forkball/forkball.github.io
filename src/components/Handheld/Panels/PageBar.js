@@ -32,7 +32,7 @@ function PageBar({ hints, blinkHints, more }) {
 }
 
 PageBar.propTypes = {
-  // [button, action] pairs, e.g. [['A', 'OPEN'], ['B', 'BACK']]
+  // [button, action] pairs, e.g. [['A', 'OPEN']]
   hints: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
   blinkHints: PropTypes.bool,
   more: PropTypes.bool,
