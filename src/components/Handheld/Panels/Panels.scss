@@ -36,12 +36,12 @@
     }
 }
 
-// "more text below" arrow floating just above the bar on the left, on a
+// "more text below" arrow floating inside the frame, bottom left, on a
 // patch of the panel colour so it stays legible over the text behind it
 .page-bar__more {
     position: absolute;
-    left: 4px;
-    bottom: calc(100% + 4px);
+    left: 12px;
+    bottom: calc(100% + 8px);
     display: flex;
     padding: 4px;
     color: $color-panel-accent;
