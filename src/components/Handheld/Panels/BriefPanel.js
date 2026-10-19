@@ -15,12 +15,11 @@ const BriefPanel = forwardRef(({ more }, ref) => {
           <ol className="list-disc list-inside">
             <li>RUBY</li>
             <li>TYPESCRIPT</li>
+            <li>SQL</li>
             <li>JAVASCRIPT</li>
             <li>PYTHON</li>
             <li>JAVA</li>
             <li>C++</li>
-            <li>C#</li>
-            <li>HASKELL</li>
           </ol>
         </div>
         <span className="scroll-anchor mb-4" />
@@ -30,12 +29,12 @@ const BriefPanel = forwardRef(({ more }, ref) => {
             <li>RUBY ON RAILS</li>
             <li>GRAPHQL</li>
             <li>GRAFANA</li>
+            <li>SUPABASE</li>
             <li>REACT.JS</li>
             <li>REACT NATIVE</li>
             <li>NODE.JS</li>
             <li>DOCKER</li>
             <li>CLOUD SERVICES</li>
-            <li>MONGODB</li>
             <li>POSTGRESQL</li>
           </ol>
         </div>
