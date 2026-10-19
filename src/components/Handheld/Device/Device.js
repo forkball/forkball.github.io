@@ -141,8 +141,8 @@ function Device({ classes }) {
     const keyHandlers = {
       ArrowUp: onUpPress,
       ArrowDown: onDownPress,
-      // enter acts as A where A does something, otherwise opens the menu
-      Enter: showMenu || panelSet === SECTIONS.SOCIALS ? () => onAButtonPress() : onStartPress,
+      // enter opens the menu on every page and selects inside it; links open with A
+      Enter: showMenu ? () => onAButtonPress() : onStartPress,
       Escape: showMenu ? onBButtonPress : onStartPress,
       Backspace: onBButtonPress,
       // the A and B keys match the on-screen hints

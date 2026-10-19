@@ -41,8 +41,8 @@ const BioPanel = forwardRef(({ image, showHint, more }, ref) => {
           </p>
           <span className="scroll-anchor mb-4" />
           <p>
-            I also like comics, music, film, rock climbing, karate, and of course, playing physical
-            and digital games.
+            I also play guitar, and like comics, music, film, and of course, playing physical and
+            digital games.
           </p>
           <span className="scroll-anchor mb-4" />
           <p>Feel free to connect through my social platforms!</p>
