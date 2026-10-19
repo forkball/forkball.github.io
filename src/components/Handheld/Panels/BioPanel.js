@@ -40,10 +40,7 @@ const BioPanel = forwardRef(({ image, showHint, more }, ref) => {
             I&apos;ve been at Shopify since 2024, doing fullstack development on payment methods.
           </p>
           <span className="scroll-anchor mb-4" />
-          <p>
-            I also like comics, music, film, rock climbing, karate, and of course, playing physical
-            and digital games.
-          </p>
+          <p>I also like comics, music, film, and of course, playing physical and digital games.</p>
           <span className="scroll-anchor mb-4" />
           <p>Feel free to connect through my social platforms!</p>
         </div>

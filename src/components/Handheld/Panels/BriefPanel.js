@@ -38,7 +38,6 @@ const BriefPanel = forwardRef(({ more }, ref) => {
         <div className="handheld-screen__interface__content__body__section">
           <h2>HOBBIES/</h2>
           <ol className="list-disc list-inside">
-            <li>ROCK CLIMBING</li>
             <li>PHOTOGRAPHY</li>
             <li>VIDEO GAMES</li>
             <li>MUSIC</li>
