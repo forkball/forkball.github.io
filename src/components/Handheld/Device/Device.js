@@ -146,10 +146,14 @@ function Device({ classes }) {
       Enter: showMenu || panelSet === SECTIONS.SOCIALS ? () => onAButtonPress() : onStartPress,
       Escape: showMenu ? onBButtonPress : onStartPress,
       Backspace: onBButtonPress,
+      // the A and B keys match the on-screen hints
+      a: () => onAButtonPress(),
+      b: onBButtonPress,
     };
     // let enter activate a focused on-screen menu item or link natively
     if (event.key === 'Enter' && onScreenControl) return;
-    const handler = keyHandlers[event.key];
+    const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
+    const handler = keyHandlers[key];
     if (!handler) return;
     event.preventDefault();
     handler();
