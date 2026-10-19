@@ -106,7 +106,7 @@
       &__hints {
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 2px;
         color: $color-panel-accent;
         // smaller than the items and never wrapped, so each hint fits the
         // half-width menu on a phone

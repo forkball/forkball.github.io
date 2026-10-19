@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import PageBar from './PageBar';
 
-const BriefPanel = forwardRef(({ showHint, more }, ref) => {
+const BriefPanel = forwardRef(({ more }, ref) => {
   return (
     <div
       ref={ref}
@@ -47,24 +47,16 @@ const BriefPanel = forwardRef(({ showHint, more }, ref) => {
           </ol>
         </div>
       </div>
-      <PageBar
-        page={2}
-        pageCount={2}
-        hints={showHint ? [['PRESS', 'START']] : []}
-        blinkHints={showHint}
-        more={more}
-      />
+      <PageBar hints={[['B', 'BACK']]} more={more} />
     </div>
   );
 });
 
 BriefPanel.propTypes = {
-  showHint: PropTypes.bool,
   more: PropTypes.bool,
 };
 
 BriefPanel.defaultProps = {
-  showHint: false,
   more: false,
 };
 

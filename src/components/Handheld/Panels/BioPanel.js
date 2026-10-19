@@ -48,13 +48,7 @@ const BioPanel = forwardRef(({ image, showHint, more }, ref) => {
           <p>Feel free to connect through my social platforms!</p>
         </div>
       </div>
-      <PageBar
-        page={1}
-        pageCount={2}
-        hints={showHint ? [['PRESS', 'START']] : []}
-        blinkHints={showHint}
-        more={more}
-      />
+      <PageBar hints={showHint ? [['PRESS', 'START']] : []} blinkHints={showHint} more={more} />
     </div>
   );
 });

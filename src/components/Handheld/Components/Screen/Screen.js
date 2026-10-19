@@ -4,12 +4,15 @@ import PropTypes from 'prop-types';
 import image from '../../../../assets/me.png';
 import './Screen.scss';
 import { BioPanel, BriefPanel, SocialPanel } from '../../Panels';
+import { SECTIONS } from '../../../../constants';
+
+// START menu labels, in SECTIONS order
+const MENU_ITEMS = ['ABOUT', 'SKILLS', 'SOCIALS'];
 
 const Screen = forwardRef(
   (
     {
       className,
-      panel,
       panelSet,
       showMenu,
       menuIndex,
@@ -23,7 +26,7 @@ const Screen = forwardRef(
     useEffect(() => {
       // eslint-disable-next-line no-param-reassign
       ref.current.scrollTop = 0;
-    }, [panel]);
+    }, [panelSet]);
 
     // whether the panel has more text below, for the down arrow hint
     const [canScrollDown, setCanScrollDown] = useState(false);
@@ -39,48 +42,41 @@ const Screen = forwardRef(
         content.removeEventListener('scroll', update);
         window.removeEventListener('resize', update);
       };
-    }, [panel, panelSet]);
+    }, [panelSet]);
 
     const renderPanel = () => {
       switch (panelSet) {
-        case 1:
-          switch (panel) {
-            default:
-              return <SocialPanel ref={ref} socialPanelIndex={socialPanelIndex} />;
-          }
+        case SECTIONS.SOCIALS:
+          return <SocialPanel ref={ref} socialPanelIndex={socialPanelIndex} />;
+        case SECTIONS.SKILLS:
+          return <BriefPanel ref={ref} more={canScrollDown && !showMenu} />;
         default:
-          switch (panel) {
-            // overview panel
-            case 1:
-              return <BriefPanel ref={ref} showHint={showHint} more={canScrollDown} />;
-            // landing panel
-            default:
-              return <BioPanel ref={ref} image={image} showHint={showHint} more={canScrollDown} />;
-          }
+          return (
+            <BioPanel
+              ref={ref}
+              image={image}
+              showHint={showHint}
+              more={canScrollDown && !showMenu}
+            />
+          );
       }
     };
     const renderMenu = () => {
       return showMenu ? (
         <div className="handheld-screen__interface__menu absolute flex flex-col h-full w-1/2 right-0 top-0">
           <ol className="handheld-screen__interface__menu__items">
-            <li
-              className={`handheld-screen__interface__menu__items__item${
-                menuIndex === 0 ? '--selected' : ''
-              }`}
-            >
-              <button type="button" onClick={menuControls[0]}>
-                ABOUT
-              </button>
-            </li>
-            <li
-              className={`handheld-screen__interface__menu__items__item${
-                menuIndex === 1 ? '--selected' : ''
-              }`}
-            >
-              <button type="button" onClick={menuControls[1]}>
-                SOCIALS
-              </button>
-            </li>
+            {MENU_ITEMS.map((label, index) => (
+              <li
+                key={label}
+                className={`handheld-screen__interface__menu__items__item${
+                  menuIndex === index ? '--selected' : ''
+                }`}
+              >
+                <button type="button" onClick={menuControls[index]}>
+                  {label}
+                </button>
+              </li>
+            ))}
           </ol>
           <div className="handheld-screen__interface__menu__hints mt-auto">
             <p>A SELECT</p>
@@ -103,7 +99,6 @@ const Screen = forwardRef(
 
 Screen.propTypes = {
   className: PropTypes.string,
-  panel: PropTypes.number,
   panelSet: PropTypes.number,
   showMenu: PropTypes.bool,
   menuIndex: PropTypes.number,
@@ -114,7 +109,6 @@ Screen.propTypes = {
 
 Screen.defaultProps = {
   className: '',
-  panel: 0,
   panelSet: 0,
   showMenu: false,
   menuIndex: 0,
@@ -122,6 +116,10 @@ Screen.defaultProps = {
     () => {
       // eslint-disable-next-line no-console
       console.log('about');
+    },
+    () => {
+      // eslint-disable-next-line no-console
+      console.log('skills');
     },
     () => {
       // eslint-disable-next-line no-console
