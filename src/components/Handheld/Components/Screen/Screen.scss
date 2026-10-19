@@ -213,10 +213,10 @@ $page-bar-height: 28px;
       }
     }
   }
+  // label / value pair, the value a short gap after its label
   &__stat {
     display: flex;
-    justify-content: space-between;
-    gap: 12px;
+    gap: 10px;
   }
 }
 
