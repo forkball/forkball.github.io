@@ -16,7 +16,7 @@ const BioPanel = forwardRef(({ image, showHint, more }, ref) => {
           <span className="scroll-anchor mb-4" />
           <h2>NAME/</h2>
           <p id="name">EROS DI PEDE</p>
-          <h2>ROLES/</h2>
+          <h2>TITLE/</h2>
           <p>SOFTWARE ENGINEER</p>
         </div>
         <img src={image} alt="me" />
