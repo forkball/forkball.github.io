@@ -213,10 +213,15 @@ $page-bar-height: 28px;
       }
     }
   }
-  // label / value pair, the value a short gap after its label
+  // label / value pair; consecutive stats sit close together like the
+  // Pokédex's HT / WT lines
   &__stat {
     display: flex;
-    gap: 10px;
+    justify-content: space-between;
+    gap: 12px;
+    & + & {
+      margin-top: -4px;
+    }
   }
 }
 
