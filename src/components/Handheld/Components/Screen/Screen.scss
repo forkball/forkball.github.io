@@ -131,6 +131,10 @@
       // the art itself at its whole-number size
       box-sizing: content-box;
       border: 2px solid $color-panel-accent;
+      // sit an equal 4px in from the top and right edges of the screen (the
+      // content's 8px side padding is pulled back by 4px)
+      margin-top: 4px;
+      margin-right: -4px;
       -webkit-transform: scaleX(-1);
       transform: scaleX(-1);
       @media (max-width: 500px) {
