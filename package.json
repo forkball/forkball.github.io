@@ -1,0 +1,57 @@
+{
+  "name": "forkbombgit.github.io",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "postcss-import": "^16.1.0",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.7.1",
+    "react-particles": "^2.3.3",
+    "react-scripts": "5.0.1",
+    "sass": "^1.55.0",
+    "tsparticles": "^2.3.4"
+  },
+  "scripts": {
+    "start": "npm run watch:css && react-scripts start",
+    "build": "npm run watch:css && react-scripts build",
+    "lint": "eslint ./src/*.js",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "watch:css": "postcss src/styles/tailwind.scss -o src/styles/tailwind-index.scss"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.13",
+    "eslint": "^8.26.0",
+    "eslint-config-airbnb": "19.0.4",
+    "eslint-config-prettier": "8.1.0",
+    "eslint-plugin-import": "2.26.0",
+    "eslint-plugin-jsx-a11y": "6.5.1",
+    "eslint-plugin-prettier": "3.3.1",
+    "eslint-plugin-react": "7.28.0",
+    "eslint-plugin-react-hooks": "4.6.0",
+    "postcss": "^8.4.47",
+    "postcss-cli": "^11.0.0",
+    "prettier": "2.2.1",
+    "tailwindcss": "^2.0.4"
+  }
+}

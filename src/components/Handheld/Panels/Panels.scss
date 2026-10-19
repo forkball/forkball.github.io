@@ -1,0 +1,69 @@
+@import "../../../styles/colors.scss";
+
+.panel-social {
+    a {
+        color: $color-panel-accent
+    }
+    a.selected {
+        color: $color-device-secondary;
+    }
+    #cheeky-email {
+        font-size: 16px;
+        line-height: unset;
+    }
+}
+
+// control hint shown in the page bar, e.g. "A OPEN"
+.page-hint {
+    padding-left: 8px;
+}
+
+// blinking hint pointing first-time visitors to the menu
+.page-hint--blink {
+    animation: pixel-blink 1s steps(1, end) infinite;
+}
+
+// small pixel triangles, drawn with clip-path so they stay crisp at any size
+.pixel-arrow {
+    display: inline-block;
+    width: 10px;
+    height: 12px;
+    background-color: currentColor;
+    &--down {
+        width: 14px;
+        height: 10px;
+        clip-path: polygon(0 0, 100% 0, 50% 100%);
+    }
+}
+
+// "more text below" arrow floating just above the bar on the left, on a
+// patch of the panel colour so it stays legible over the text behind it
+.page-bar__more {
+    position: absolute;
+    left: 4px;
+    bottom: calc(100% + 4px);
+    display: flex;
+    padding: 4px;
+    color: $color-panel-accent;
+    background-color: $color-panel-primary;
+    animation: pixel-bob 0.8s steps(2, end) infinite;
+}
+
+@keyframes pixel-blink {
+    50% {
+        opacity: 0;
+    }
+}
+
+@keyframes pixel-bob {
+    50% {
+        transform: translateY(3px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .page-hint--blink,
+    .page-bar__more {
+        animation: none;
+    }
+}
