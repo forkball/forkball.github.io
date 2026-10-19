@@ -17,7 +17,8 @@ const BioPanel = forwardRef(({ image, showHint, more }, ref) => {
           <p className="dex-entry__number">No.001</p>
         </div>
         <div className="dex-entry__info">
-          <p id="name">EROS DI PEDE</p>
+          {/* keep the surname together when the name wraps */}
+          <p id="name">EROS DI&nbsp;PEDE</p>
           <p>SOFTWARE ENGINEER</p>
           <p className="dex-entry__stat">
             <span>CO.</span>
