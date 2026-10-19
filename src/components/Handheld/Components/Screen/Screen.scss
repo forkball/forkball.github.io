@@ -1,6 +1,8 @@
 @import '../../../../styles/colors.scss';
 @import '../../../../styles/mixins/breakpoints.scss';
 
+$page-bar-height: 28px;
+
 .handheld-screen {
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   background-color: $color-black;
@@ -119,36 +121,11 @@
     }
   
     // to do, move panel styles to individual components
-    // the portrait is 160px pixel art: show it at whole-number scale with no
-    // smoothing so the pixels stay sharp, shrinking only on small phones
-    img {
-      flex-shrink: 0;
-      width: 160px;
-      height: 160px;
-      aspect-ratio: 1/1;
-      image-rendering: pixelated;
-      // solid frame matching the divider below the header; content-box keeps
-      // the art itself at its whole-number size
-      box-sizing: content-box;
-      border: 2px solid $color-panel-accent;
-      // sit an equal 4px in from the top and right edges of the screen (the
-      // content's 8px side padding is pulled back by 4px)
-      margin-top: 4px;
-      margin-right: -4px;
-      -webkit-transform: scaleX(-1);
-      transform: scaleX(-1);
-      @media (max-width: 500px) {
-        width: 120px;
-        height: 120px;
-      }
-      @media (max-width: 360px) {
-        width: 96px;
-        height: 96px;
-      }
-    }
-    
     &__content {
-      padding: 0px 8px 8px 8px;
+      // clear the Pokédex frame drawn just inside the screen edge, and stop
+      // scrolling at its bottom rule rather than under the page bar
+      padding: 16px 16px 8px 16px;
+      max-height: calc(100% - #{$page-bar-height} - 8px);
       @include tablet {
         padding-bottom: 24px;
       }
@@ -175,6 +152,8 @@
         bottom: 0;
         left: 0;
         width: 100%;
+        // fixed so the frame above it can end exactly at its top edge
+        height: $page-bar-height;
         background-color: $color-panel-accent;
         p {
           line-height: unset;
@@ -185,14 +164,107 @@
   }
 }
 
-// name and title beside the portrait at every size
-#landing-panel {
-  gap: 8px;
-  > div {
-    min-width: 0;
+// Pokédex entry header: sprite on the left, name, title and stats on the right
+.dex-entry {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  p {
+    line-height: unset;
   }
-  // separate the name from the title below it
-  #name {
-    margin-bottom: 12px;
+  &__portrait {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    // the sprite is 153x144 pixel art: whole-number scale, no smoothing
+    img {
+      width: 153px;
+      height: 144px;
+      image-rendering: pixelated;
+      transform: scaleX(-1);
+      @media (max-width: 500px) {
+        width: 102px;
+        height: 96px;
+      }
+      @media (max-width: 360px) {
+        width: 77px;
+        height: 72px;
+      }
+    }
+  }
+  &__info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    @media (max-width: 500px) {
+      p {
+        font-size: 14px;
+      }
+    }
+    @media (max-width: 360px) {
+      p {
+        font-size: 11px;
+      }
+    }
+  }
+  // label / value pair; consecutive stats sit close together like the
+  // Pokédex's HT / WT lines
+  &__stat {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    & + & {
+      margin-top: -4px;
+    }
+  }
+}
+
+// thick rule with square studs, under the entry header
+.studded-divider {
+  position: relative;
+  flex-shrink: 0;
+  height: 14px;
+  margin: 8px -8px 16px;
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 5px;
+    height: 4px;
+    background-color: $color-panel-accent;
+  }
+  i {
+    position: absolute;
+    top: 0;
+    width: 14px;
+    height: 14px;
+    margin-left: -7px;
+    background-color: $color-white;
+    border: 3px solid $color-panel-accent;
+  }
+}
+
+// frame drawn just inside the screen edge, stopping at the page bar
+.dex-frame {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: calc(#{$page-bar-height} + 4px);
+  border: 4px double $color-panel-accent;
+  pointer-events: none;
+  i {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background-color: $color-white;
+    border: 3px solid $color-panel-accent;
+    &:nth-child(1) { top: -8px; left: -8px; }
+    &:nth-child(2) { top: -8px; right: -8px; }
+    &:nth-child(3) { bottom: -8px; left: -8px; }
+    &:nth-child(4) { bottom: -8px; right: -8px; }
   }
 }
