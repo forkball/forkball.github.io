@@ -49,9 +49,16 @@ const Screen = forwardRef(
         case SECTIONS.SOCIALS:
           return <SocialPanel ref={ref} socialPanelIndex={socialPanelIndex} />;
         case SECTIONS.SKILLS:
-          return <BriefPanel ref={ref} more={canScrollDown} />;
+          return <BriefPanel ref={ref} more={canScrollDown && !showMenu} />;
         default:
-          return <BioPanel ref={ref} image={image} showHint={showHint} more={canScrollDown} />;
+          return (
+            <BioPanel
+              ref={ref}
+              image={image}
+              showHint={showHint}
+              more={canScrollDown && !showMenu}
+            />
+          );
       }
     };
     const renderMenu = () => {

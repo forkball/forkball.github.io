@@ -36,11 +36,16 @@
     }
 }
 
-// "more text below" arrow at the left end of the bar, ahead of the hint
+// "more text below" arrow floating just above the bar on the left, on a
+// patch of the panel colour so it stays legible over the text behind it
 .page-bar__more {
-    flex-shrink: 0;
-    margin-left: 8px;
-    color: $color-white;
+    position: absolute;
+    left: 4px;
+    bottom: calc(100% + 4px);
+    display: flex;
+    padding: 4px;
+    color: $color-panel-accent;
+    background-color: $color-panel-primary;
     animation: pixel-bob 0.8s steps(2, end) infinite;
 }
 
