@@ -119,20 +119,23 @@
     }
   
     // to do, move panel styles to individual components
+    // the portrait is 160px pixel art: show it at whole-number scale with no
+    // smoothing so the pixels stay sharp, shrinking only on small phones
     img {
-      width: 150px; 
-      height: 150px;
+      flex-shrink: 0;
+      width: 160px;
+      height: 160px;
       aspect-ratio: 1/1;
+      image-rendering: pixelated;
       -webkit-transform: scaleX(-1);
       transform: scaleX(-1);
-      @include mobile {
-        width: 125px;
-        height: 125px;
-      }
-      // smaller mobile
       @media (max-width: 500px) {
-        width: 100%;
-        height: unset;
+        width: 120px;
+        height: 120px;
+      }
+      @media (max-width: 360px) {
+        width: 96px;
+        height: 96px;
       }
     }
     
@@ -174,9 +177,10 @@
   }
 }
 
+// name and roles beside the portrait at every size
 #landing-panel {
-  // smaller mobile
-  @media (max-width: 500px) {
-    flex-direction: column;
+  gap: 8px;
+  > div {
+    min-width: 0;
   }
 }
