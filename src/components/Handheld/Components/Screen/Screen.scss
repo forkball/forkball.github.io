@@ -126,6 +126,11 @@ $page-bar-height: 28px;
       // scrolling at its bottom rule rather than under the page bar
       padding: 16px 16px 8px 16px;
       max-height: calc(100% - #{$page-bar-height} - 8px);
+      // scrolling to a section leaves the same 16px as the top padding, so
+      // scrolling back to the first one returns to the very top
+      .scroll-anchor {
+        scroll-margin-top: 16px;
+      }
       @include tablet {
         padding-bottom: 24px;
       }
