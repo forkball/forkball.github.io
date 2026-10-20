@@ -23,6 +23,17 @@
         max-height: unset;
         border-left: unset;
         border-radius: 0px;
+        // on phones the screen takes all the height the controls don't need,
+        // so the controls sit at the bottom like a real handheld
+        .handheld__screen {
+            flex: 1 1 auto;
+            min-height: 0;
+            display: flex;
+        }
+        .handheld__input {
+            flex: 0 0 auto;
+            height: auto;
+        }
         @media (max-height: 650px) {
             gap: 4px;
             h1 {

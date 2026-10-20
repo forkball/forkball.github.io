@@ -47,14 +47,17 @@ $page-bar-height: 28px;
       min-height: unset;
     }
   }
-  // smaller mobile
-  @media (max-width: 500px) {
-    max-height: 320px;
-  }
-
   // smallest mobile
   @media (max-width: 320px) {
     min-height: unset;
+  }
+
+  // phones: fill the height the device gives the screen
+  @include mobile {
+    flex: 1 1 auto;
+    height: auto;
+    min-height: 0;
+    max-height: none;
   }
 
   &__interface {
@@ -72,6 +75,10 @@ $page-bar-height: 28px;
     @media (max-width: 500px) {
       width: 100%;
       max-width: 380px;
+    }
+
+    @include mobile {
+      height: 100%;
     }
     
     // classic RPG menu box: double border and a cursor on the selected item
