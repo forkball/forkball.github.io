@@ -3,6 +3,13 @@ import PropTypes from 'prop-types';
 import PageBar from './PageBar';
 import './Panels.scss';
 
+// the address is only put together when tapped, so the full address never
+// appears in the page or the bundle for scrapers to pick up
+const openEmail = (event) => {
+  event.preventDefault();
+  window.location.href = `mailto:${['erosdipede', 'gmail.com'].join('@')}`;
+};
+
 const SocialPanel = forwardRef(({ socialPanelIndex }, ref) => {
   return (
     <div
@@ -57,7 +64,14 @@ const SocialPanel = forwardRef(({ socialPanelIndex }, ref) => {
           </div>
           <div>
             <h2>EMAIL/</h2>
-            <p id="cheeky-email">EROSDIPEDE [AT] GMAIL [DOT] COM</p>
+            <a
+              id="cheeky-email"
+              className={`${socialPanelIndex === 4 && 'selected'} `}
+              href="mailto:"
+              onClick={openEmail}
+            >
+              EROSDIPEDE [AT] GMAIL [DOT] COM
+            </a>
           </div>
         </div>
       </div>
