@@ -5,7 +5,8 @@ import Input from '../Components/Input';
 import { SECTIONS } from '../../../constants';
 import './Device.scss';
 
-const NUMBER_OF_SOCIAL_LINKS = 3;
+// index of the last selectable entry on the socials page (the email)
+const NUMBER_OF_SOCIAL_LINKS = 4;
 const MINIMUM_HORIZONTAL_VIEW_HEIGHT = 900;
 const MAXIMUM_HORIZONTAL_VIEW_WIDTH = 728;
 const MAXIMUM_MENU_INDEX = Object.keys(SECTIONS).length - 1;
@@ -230,10 +231,16 @@ function Device({ classes }) {
     setSections();
   }, [panelSet]);
 
+  // track the window size so rotating a phone or resizing switches layouts
   useEffect(() => {
-    setWindowHeight(window.innerHeight);
-    setWindowWidth(window.innerWidth);
-  }, [window]);
+    const updateSize = () => {
+      setWindowHeight(window.innerHeight);
+      setWindowWidth(window.innerWidth);
+    };
+    updateSize();
+    window.addEventListener('resize', updateSize);
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
 
   if (windowHeight < MINIMUM_HORIZONTAL_VIEW_HEIGHT && windowWidth > MAXIMUM_HORIZONTAL_VIEW_WIDTH)
     return renderHorizontalDevice();
