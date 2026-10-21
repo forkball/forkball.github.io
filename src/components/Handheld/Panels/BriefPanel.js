@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import PageBar from './PageBar';
 
-const BriefPanel = forwardRef(({ more }, ref) => {
+const BriefPanel = forwardRef(({ more, goHome }, ref) => {
   return (
     <div
       ref={ref}
@@ -51,17 +51,19 @@ const BriefPanel = forwardRef(({ more }, ref) => {
           </ol>
         </div>
       </div>
-      <PageBar hints={[['B', 'HOME']]} more={more} />
+      <PageBar hints={[['B', 'BACK']]} more={more} onHome={goHome} />
     </div>
   );
 });
 
 BriefPanel.propTypes = {
   more: PropTypes.bool,
+  goHome: PropTypes.func,
 };
 
 BriefPanel.defaultProps = {
   more: false,
+  goHome: () => {},
 };
 
 export default BriefPanel;

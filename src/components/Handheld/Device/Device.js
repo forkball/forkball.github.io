@@ -73,17 +73,22 @@ function Device({ classes }) {
     });
   };
 
-  // open an app from the top
+  // open an app from the top, as a history entry so the phone's or
+  // browser's back button closes it instead of leaving the site
   const openSection = (section) => {
+    const appIndex = APPS.findIndex((app) => app.section === section);
+    if (appIndex >= 0) setHomeIndex(appIndex);
     setPanelSet(section);
     setSectionPosition(0);
+    window.history.pushState({ section }, '');
   };
 
-  // back to the home screen, with the cursor on the app just closed
+  // back to the home screen, with the cursor still on the app just closed.
+  // Going back through history keeps the back button in step; the
+  // popstate listener below then shows the home screen
   const goHome = () => {
-    const appIndex = APPS.findIndex(({ section }) => section === panelSet);
-    if (appIndex >= 0) setHomeIndex(appIndex);
-    setPanelSet(SECTIONS.HOME);
+    if (window.history.state && window.history.state.section !== undefined) window.history.back();
+    else setPanelSet(SECTIONS.HOME);
   };
 
   // apps are single pages, so left and right only move around the home screen
@@ -199,6 +204,7 @@ function Device({ classes }) {
           panelSet={panelSet}
           homeIndex={homeIndex}
           openApp={openSection}
+          goHome={goHome}
           socialPanelIndex={socialPanelIndex}
         />
       </div>
@@ -238,6 +244,7 @@ function Device({ classes }) {
               panelSet={panelSet}
               homeIndex={homeIndex}
               openApp={openSection}
+              goHome={goHome}
               socialPanelIndex={socialPanelIndex}
             />
           }
@@ -249,6 +256,17 @@ function Device({ classes }) {
   useEffect(() => {
     setSections();
   }, [panelSet]);
+
+  // follow the back and forward buttons between the home screen and apps
+  useEffect(() => {
+    const onPopState = (event) => {
+      const section = event.state ? event.state.section : undefined;
+      setPanelSet(section !== undefined ? section : SECTIONS.HOME);
+      setSectionPosition(0);
+    };
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, []);
 
   // track the window size so rotating a phone or resizing switches layouts
   useEffect(() => {

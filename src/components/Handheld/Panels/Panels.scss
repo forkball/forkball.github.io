@@ -84,6 +84,11 @@
     width: 10px;
     height: 12px;
     background-color: currentColor;
+    &--left {
+        width: 10px;
+        height: 12px;
+        clip-path: polygon(100% 0, 100% 100%, 0 50%);
+    }
     &--down {
         width: 14px;
         height: 10px;
@@ -102,6 +107,22 @@
     color: $color-panel-accent;
     background-color: $color-panel-primary;
     animation: pixel-bob 0.8s steps(2, end) infinite;
+}
+
+// HOME button on the right of the page bar, closing the open app
+.page-bar__home {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 100%;
+    margin-left: auto;
+    padding: 0 8px;
+    color: $color-white;
+    line-height: unset;
+    &:hover,
+    &:focus-visible {
+        color: $color-device-secondary;
+    }
 }
 
 @keyframes pixel-blink {

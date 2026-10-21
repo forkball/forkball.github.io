@@ -13,6 +13,7 @@ const Screen = forwardRef(
       panelSet,
       homeIndex,
       openApp,
+      goHome,
       // perhaps create a panel state
       socialPanelIndex,
     },
@@ -44,11 +45,11 @@ const Screen = forwardRef(
         case SECTIONS.HOME:
           return <HomePanel ref={ref} homeIndex={homeIndex} openApp={openApp} />;
         case SECTIONS.SOCIALS:
-          return <SocialPanel ref={ref} socialPanelIndex={socialPanelIndex} />;
+          return <SocialPanel ref={ref} socialPanelIndex={socialPanelIndex} goHome={goHome} />;
         case SECTIONS.SKILLS:
-          return <BriefPanel ref={ref} more={canScrollDown} />;
+          return <BriefPanel ref={ref} more={canScrollDown} goHome={goHome} />;
         default:
-          return <BioPanel ref={ref} image={image} more={canScrollDown} />;
+          return <BioPanel ref={ref} image={image} more={canScrollDown} goHome={goHome} />;
       }
     };
 
@@ -74,6 +75,7 @@ Screen.propTypes = {
   panelSet: PropTypes.number,
   homeIndex: PropTypes.number,
   openApp: PropTypes.func,
+  goHome: PropTypes.func,
   socialPanelIndex: PropTypes.number,
 };
 
@@ -82,6 +84,7 @@ Screen.defaultProps = {
   panelSet: SECTIONS.HOME,
   homeIndex: 0,
   openApp: () => {},
+  goHome: () => {},
   socialPanelIndex: 0,
 };
 
