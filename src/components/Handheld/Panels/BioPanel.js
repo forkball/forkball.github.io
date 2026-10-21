@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import PageBar from './PageBar';
 import StuddedDivider from './StuddedDivider';
 
-const BioPanel = forwardRef(({ image, showHint, more }, ref) => {
+const BioPanel = forwardRef(({ image, more }, ref) => {
   return (
     <div
       ref={ref}
@@ -57,19 +57,17 @@ const BioPanel = forwardRef(({ image, showHint, more }, ref) => {
           <p>Feel free to connect through my social platforms!</p>
         </div>
       </div>
-      <PageBar hints={showHint ? [['PRESS', 'START']] : []} blinkHints={showHint} more={more} />
+      <PageBar hints={[['B', 'HOME']]} more={more} />
     </div>
   );
 });
 
 BioPanel.propTypes = {
   image: PropTypes.string.isRequired,
-  showHint: PropTypes.bool,
   more: PropTypes.bool,
 };
 
 BioPanel.defaultProps = {
-  showHint: false,
   more: false,
 };
 
