@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import TipsContext from '../TipsContext';
+import SettingsContext from '../SettingsContext';
 
 const HINT_SWAP_MS = 2000;
 // blinking hints change every this many blinks
@@ -19,10 +19,10 @@ const animationDurationMs = (style) => {
 // turns, so they don't read as one sentence; blinking ones change only while
 // hidden. `more` floats a bobbing down arrow just above the bar while there's
 // text below. `onHome` adds a tappable HOME button on the right for touch,
-// while the hints guide people using the device's buttons, unless turned off
-// in SETTINGS.
+// while the hints guide people using the device's buttons. SETTINGS can hide
+// either.
 function PageBar({ hints, blinkHints, more, onHome }) {
-  const tipMode = useContext(TipsContext);
+  const { tipMode, showHomeButton } = useContext(SettingsContext);
   // the TIPS setting can hold the blink still
   const blinking = blinkHints && tipMode === 'BLINK';
   const [hintIndex, setHintIndex] = useState(0);
@@ -65,7 +65,7 @@ function PageBar({ hints, blinkHints, more, onHome }) {
       <p ref={hintRef} className={`page-hint${blinking ? ' page-hint--blink' : ''}`}>
         {hint ? `${hint[0]} ${hint[1]}` : '\u00a0'}
       </p>
-      {onHome && (
+      {onHome && showHomeButton && (
         <button type="button" className="page-bar__home" onClick={onHome}>
           <i className="pixel-arrow pixel-arrow--left" aria-hidden="true" />
           HOME

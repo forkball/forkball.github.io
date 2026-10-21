@@ -12,25 +12,6 @@ $page-bar-height: 28px;
   padding: 16px;
   gap: 24px;
 
-  ::-webkit-scrollbar {
-    width: 10px;
-  }
-  
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: #f1f1f1; 
-  }
-   
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: #888; 
-  }
-  
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #555; 
-  }
-  
   @include tablet {
     width: 100%;
     height: 400px; 
@@ -83,6 +64,13 @@ $page-bar-height: 28px;
     
     // to do, move panel styles to individual components
     &__content {
+      // no scrollbar: it would take width from the content (so the divider
+      // couldn't reach the frame) and cut across the frame; the bobbing down
+      // arrow shows when there's more, and swipe, wheel and the D-pad scroll
+      scrollbar-width: none;
+      &::-webkit-scrollbar {
+        display: none;
+      }
       // clear the Pokédex frame drawn just inside the screen edge, and stop
       // scrolling at its bottom rule rather than under the page bar
       padding: 16px 16px 8px 16px;
