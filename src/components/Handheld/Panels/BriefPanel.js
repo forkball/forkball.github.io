@@ -51,7 +51,7 @@ const BriefPanel = forwardRef(({ more, goHome }, ref) => {
           </ol>
         </div>
       </div>
-      <PageBar hints={[['B', 'BACK']]} more={more} onHome={goHome} />
+      <PageBar hints={[['B', 'BACK']]} blinkHints more={more} onHome={goHome} />
     </div>
   );
 });

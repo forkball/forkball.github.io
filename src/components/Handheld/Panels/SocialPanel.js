@@ -80,6 +80,7 @@ const SocialPanel = forwardRef(({ socialPanelIndex, goHome }, ref) => {
           ['A', 'OPEN'],
           ['B', 'BACK'],
         ]}
+        blinkHints
         onHome={goHome}
       />
     </div>

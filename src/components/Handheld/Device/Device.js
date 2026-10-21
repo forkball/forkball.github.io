@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Screen } from '../Components';
 import Input from '../Components/Input';
+import TipsContext from '../TipsContext';
 import { APPS, HOME_COLUMNS, SECTIONS } from '../../../constants';
 import './Device.scss';
 
@@ -9,6 +10,17 @@ import './Device.scss';
 const NUMBER_OF_SOCIAL_LINKS = 4;
 const MINIMUM_HORIZONTAL_VIEW_HEIGHT = 900;
 const MAXIMUM_HORIZONTAL_VIEW_WIDTH = 728;
+const TIPS_STORAGE_KEY = 'handheld-tips';
+
+// the tips setting is remembered per browser; storage can be blocked, in
+// which case tips stay on and the switch only lasts for the visit
+const loadShowTips = () => {
+  try {
+    return window.localStorage.getItem(TIPS_STORAGE_KEY) !== 'off';
+  } catch (error) {
+    return true;
+  }
+};
 function Device({ classes }) {
   const panelRef = useRef(null);
 
@@ -18,6 +30,7 @@ function Device({ classes }) {
   const [homeIndex, setHomeIndex] = useState(0);
   const [panelSet, setPanelSet] = useState(SECTIONS.HOME);
   const [socialPanelIndex, setSocialPanelIndex] = useState(0);
+  const [showTips, setShowTips] = useState(loadShowTips);
   const [windowHeight, setWindowHeight] = useState(0);
   const [windowWidth, setWindowWidth] = useState(0);
 
@@ -133,6 +146,17 @@ function Device({ classes }) {
     }
   };
 
+  // turn the page bar hints on or off
+  const toggleTips = () => {
+    const next = !showTips;
+    setShowTips(next);
+    try {
+      window.localStorage.setItem(TIPS_STORAGE_KEY, next ? 'on' : 'off');
+    } catch (error) {
+      // storage blocked: keep the setting for this visit only
+    }
+  };
+
   // start always returns to the home screen
   const onStartPress = () => {
     if (!onHome) goHome();
@@ -143,6 +167,9 @@ function Device({ classes }) {
     switch (panelSet) {
       case SECTIONS.HOME:
         openSection(APPS[homeIndex].section);
+        break;
+      case SECTIONS.SETTINGS:
+        toggleTips();
         break;
       case SECTIONS.SOCIALS: {
         const anchors = document
@@ -205,6 +232,8 @@ function Device({ classes }) {
           homeIndex={homeIndex}
           openApp={openSection}
           goHome={goHome}
+          showTips={showTips}
+          toggleTips={toggleTips}
           socialPanelIndex={socialPanelIndex}
         />
       </div>
@@ -245,6 +274,8 @@ function Device({ classes }) {
               homeIndex={homeIndex}
               openApp={openSection}
               goHome={goHome}
+              showTips={showTips}
+              toggleTips={toggleTips}
               socialPanelIndex={socialPanelIndex}
             />
           }
@@ -280,8 +311,8 @@ function Device({ classes }) {
   }, []);
 
   if (windowHeight < MINIMUM_HORIZONTAL_VIEW_HEIGHT && windowWidth > MAXIMUM_HORIZONTAL_VIEW_WIDTH)
-    return renderHorizontalDevice();
-  return renderVerticalDevice();
+    return <TipsContext.Provider value={showTips}>{renderHorizontalDevice()}</TipsContext.Provider>;
+  return <TipsContext.Provider value={showTips}>{renderVerticalDevice()}</TipsContext.Provider>;
 }
 
 Device.propTypes = {

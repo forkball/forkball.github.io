@@ -13,12 +13,29 @@
     }
 }
 
+// settings: label on the left, current value on the right
+.panel-settings {
+    h2 {
+        margin-bottom: 8px;
+    }
+    .setting {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        color: $color-panel-accent;
+        &.selected {
+            color: $color-device-secondary;
+        }
+    }
+}
+
 // home screen: a grid of app tiles
 .panel-home {
     &__grid {
         margin-top: 8px;
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        // two apps per row, matching HOME_COLUMNS
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 16px 8px;
     }
 }
@@ -73,9 +90,9 @@
     padding-left: 8px;
 }
 
-// blinking hint, for pages whose main control is A
+// blinking control hint in the page bar
 .page-hint--blink {
-    animation: pixel-blink 1s steps(1, end) infinite;
+    animation: pixel-blink 1.25s steps(1, end) infinite;
 }
 
 // small pixel triangles, drawn with clip-path so they stay crisp at any size

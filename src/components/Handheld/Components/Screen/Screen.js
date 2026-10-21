@@ -3,7 +3,7 @@ import React, { forwardRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import image from '../../../../assets/me-sprite.png';
 import './Screen.scss';
-import { BioPanel, BriefPanel, HomePanel, SocialPanel } from '../../Panels';
+import { BioPanel, BriefPanel, HomePanel, SettingsPanel, SocialPanel } from '../../Panels';
 import { SECTIONS } from '../../../../constants';
 
 const Screen = forwardRef(
@@ -14,6 +14,8 @@ const Screen = forwardRef(
       homeIndex,
       openApp,
       goHome,
+      showTips,
+      toggleTips,
       // perhaps create a panel state
       socialPanelIndex,
     },
@@ -44,6 +46,10 @@ const Screen = forwardRef(
       switch (panelSet) {
         case SECTIONS.HOME:
           return <HomePanel ref={ref} homeIndex={homeIndex} openApp={openApp} />;
+        case SECTIONS.SETTINGS:
+          return (
+            <SettingsPanel ref={ref} showTips={showTips} toggleTips={toggleTips} goHome={goHome} />
+          );
         case SECTIONS.SOCIALS:
           return <SocialPanel ref={ref} socialPanelIndex={socialPanelIndex} goHome={goHome} />;
         case SECTIONS.SKILLS:
@@ -76,6 +82,8 @@ Screen.propTypes = {
   homeIndex: PropTypes.number,
   openApp: PropTypes.func,
   goHome: PropTypes.func,
+  showTips: PropTypes.bool,
+  toggleTips: PropTypes.func,
   socialPanelIndex: PropTypes.number,
 };
 
@@ -85,6 +93,8 @@ Screen.defaultProps = {
   homeIndex: 0,
   openApp: () => {},
   goHome: () => {},
+  showTips: true,
+  toggleTips: () => {},
   socialPanelIndex: 0,
 };
 
