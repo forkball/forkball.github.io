@@ -31,7 +31,7 @@ function Input({
             <button
               className="font-roboto"
               type="button"
-              aria-label="select"
+              aria-label="select, next app"
               onClick={handleSelect}
             >
               SELECT
@@ -43,7 +43,7 @@ function Input({
             <button
               className="font-roboto"
               type="button"
-              aria-label="start, home screen"
+              aria-label="start, settings"
               onClick={handleStart}
             >
               START
@@ -120,7 +120,7 @@ function Input({
                 <button
                   className="font-roboto"
                   type="button"
-                  aria-label="select"
+                  aria-label="select, next app"
                   onClick={handleSelect}
                 >
                   SELECT
@@ -132,7 +132,7 @@ function Input({
                 <button
                   className="font-roboto"
                   type="button"
-                  aria-label="start, home screen"
+                  aria-label="start, settings"
                   onClick={handleStart}
                 >
                   START

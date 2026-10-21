@@ -107,14 +107,21 @@ function Device({ classes }) {
     });
   };
 
-  // open an app from the top, as a history entry so the phone's or
-  // browser's back button closes it instead of leaving the site
-  const openSection = (section) => {
+  // keep the home cursor on the app being shown
+  const pointHomeAt = (section) => {
     const appIndex = APPS.findIndex((app) => app.section === section);
     if (appIndex >= 0) setHomeIndex(appIndex);
+  };
+
+  // open an app from the top, as a history entry so the phone's or
+  // browser's back button closes it instead of leaving the site. Swapping
+  // one app for another replaces that entry, so back still goes home
+  const openSection = (section, { replace = false } = {}) => {
+    pointHomeAt(section);
     setPanelSet(section);
     setSectionPosition(0);
-    window.history.pushState({ section }, '');
+    if (replace) window.history.replaceState({ section }, '');
+    else window.history.pushState({ section }, '');
   };
 
   // back to the home screen, with the cursor still on the app just closed.
@@ -191,9 +198,22 @@ function Device({ classes }) {
     { label: 'BUTTONS', value: buttonSize },
   ];
 
-  // start always returns to the home screen
+  // start opens settings from anywhere, and closes them back to where you were
   const onStartPress = () => {
-    if (!onHome) goHome();
+    if (panelSet === SECTIONS.SETTINGS) goHome();
+    else openSection(SECTIONS.SETTINGS);
+  };
+
+  // select flips to the next app, skipping settings; from the home screen
+  // it opens the app under the cursor
+  const onSelectPress = () => {
+    const contentApps = APPS.filter(({ section }) => section !== SECTIONS.SETTINGS);
+    const current = contentApps.findIndex(({ section }) => section === panelSet);
+    let next;
+    if (current >= 0) next = contentApps[(current + 1) % contentApps.length];
+    else if (onHome) next = contentApps.find(({ section }) => section === APPS[homeIndex].section);
+    next = next || contentApps[0];
+    openSection(next.section, { replace: !onHome });
   };
 
   // interact ui, opens apps and selects items
@@ -249,10 +269,16 @@ function Device({ classes }) {
     handler();
   };
 
+  // the listener reads the handler from a ref updated on every render, so a
+  // key pressed right after another (Right then Enter) sees the new state
+  // rather than waiting for the listener to be re-attached
+  const keyDownRef = useRef(handleKeyDown);
+  keyDownRef.current = handleKeyDown;
   useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  });
+    const onKeyDown = (event) => keyDownRef.current(event);
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, []);
 
   const renderVerticalDevice = () => (
     <div
@@ -280,7 +306,7 @@ function Device({ classes }) {
           handleRight={onRightPress}
           handleDown={onDownPress}
           handleUp={onUpPress}
-          handleSelect={onStartPress}
+          handleSelect={onSelectPress}
           handleStart={onStartPress}
           handleA={onAButtonPress}
           handleB={onBButtonPress}
@@ -302,7 +328,7 @@ function Device({ classes }) {
           handleRight={onRightPress}
           handleDown={onDownPress}
           handleUp={onUpPress}
-          handleSelect={onStartPress}
+          handleSelect={onSelectPress}
           handleStart={onStartPress}
           handleA={onAButtonPress}
           handleB={onBButtonPress}
@@ -333,6 +359,7 @@ function Device({ classes }) {
     const onPopState = (event) => {
       const section = event.state ? event.state.section : undefined;
       setPanelSet(section !== undefined ? section : SECTIONS.HOME);
+      if (section !== undefined) pointHomeAt(section);
       setSectionPosition(0);
     };
     window.addEventListener('popstate', onPopState);
