@@ -73,7 +73,7 @@
     padding-left: 8px;
 }
 
-// blinking hint, for pages whose main control is A
+// blinking control hint in the page bar
 .page-hint--blink {
     animation: pixel-blink 1s steps(1, end) infinite;
 }
