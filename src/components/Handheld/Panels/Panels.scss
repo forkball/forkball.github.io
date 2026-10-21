@@ -13,15 +13,10 @@
     }
 }
 
-// home screen: a grid of app tiles under the owner's name
+// home screen: a grid of app tiles
 .panel-home {
-    &__title {
-        line-height: unset;
-        padding: 8px 0 12px;
-        margin-bottom: 16px;
-        border-bottom: 4px solid $color-panel-accent;
-    }
     &__grid {
+        margin-top: 8px;
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 16px 8px;

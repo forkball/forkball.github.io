@@ -80,7 +80,6 @@ const HomePanel = forwardRef(({ homeIndex, openApp }, ref) => {
       ref={ref}
       className="handheld-screen__interface__content panel-home flex flex-col h-full w-full overflow-y-auto"
     >
-      <p className="panel-home__title">EROS DI&nbsp;PEDE</p>
       <ol className="panel-home__grid">
         {APPS.map(({ label, section }, index) => (
           <li key={label}>
