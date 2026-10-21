@@ -69,3 +69,28 @@
         max-width: 576px;
     }
 }
+
+// BUTTONS setting: scale the controls from their AUTO size
+.handheld--buttons-large {
+    .handheld-input__panel__controls,
+    .handheld-input__navigation__controls {
+        zoom: 1.15;
+        // narrower phones have less room to spare
+        @media (max-width: 374px) {
+            zoom: 1.05;
+        }
+    }
+    // on phones both pads only fit side by side if the A/B pad, which has
+    // room to spare, gets narrower
+    @include mobile {
+        .handheld-input__panel--right .handheld-input__panel__controls {
+            width: 140px;
+        }
+    }
+}
+.handheld--buttons-small {
+    .handheld-input__panel__controls,
+    .handheld-input__navigation__controls {
+        zoom: 0.85;
+    }
+}

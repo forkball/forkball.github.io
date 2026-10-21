@@ -14,8 +14,9 @@ const Screen = forwardRef(
       homeIndex,
       openApp,
       goHome,
-      showTips,
-      toggleTips,
+      settings,
+      settingsIndex,
+      changeSetting,
       // perhaps create a panel state
       socialPanelIndex,
     },
@@ -48,7 +49,13 @@ const Screen = forwardRef(
           return <HomePanel ref={ref} homeIndex={homeIndex} openApp={openApp} />;
         case SECTIONS.SETTINGS:
           return (
-            <SettingsPanel ref={ref} showTips={showTips} toggleTips={toggleTips} goHome={goHome} />
+            <SettingsPanel
+              ref={ref}
+              settings={settings}
+              settingsIndex={settingsIndex}
+              changeSetting={changeSetting}
+              goHome={goHome}
+            />
           );
         case SECTIONS.SOCIALS:
           return <SocialPanel ref={ref} socialPanelIndex={socialPanelIndex} goHome={goHome} />;
@@ -82,8 +89,11 @@ Screen.propTypes = {
   homeIndex: PropTypes.number,
   openApp: PropTypes.func,
   goHome: PropTypes.func,
-  showTips: PropTypes.bool,
-  toggleTips: PropTypes.func,
+  settings: PropTypes.arrayOf(
+    PropTypes.shape({ label: PropTypes.string, value: PropTypes.string }),
+  ),
+  settingsIndex: PropTypes.number,
+  changeSetting: PropTypes.func,
   socialPanelIndex: PropTypes.number,
 };
 
@@ -93,8 +103,9 @@ Screen.defaultProps = {
   homeIndex: 0,
   openApp: () => {},
   goHome: () => {},
-  showTips: true,
-  toggleTips: () => {},
+  settings: [],
+  settingsIndex: 0,
+  changeSetting: () => {},
   socialPanelIndex: 0,
 };
 

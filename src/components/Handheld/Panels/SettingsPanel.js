@@ -2,8 +2,9 @@ import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import PageBar from './PageBar';
 
-// device settings; for now a single switch for the control hints
-const SettingsPanel = forwardRef(({ showTips, toggleTips, goHome }, ref) => {
+// device settings: each row shows its current value, and A or a tap changes
+// the selected one
+const SettingsPanel = forwardRef(({ settings, settingsIndex, changeSetting, goHome }, ref) => {
   return (
     <div
       ref={ref}
@@ -11,19 +12,21 @@ const SettingsPanel = forwardRef(({ showTips, toggleTips, goHome }, ref) => {
     >
       <div className="handheld-screen__interface__content__body flex flex-col text-left mt-4">
         <h2>SETTINGS/</h2>
-        <button
-          type="button"
-          className="setting selected"
-          aria-pressed={showTips}
-          onClick={toggleTips}
-        >
-          <span>TIPS</span>
-          <span className="setting__value">{showTips ? 'ON' : 'OFF'}</span>
-        </button>
+        {settings.map(({ label, value }, index) => (
+          <button
+            key={label}
+            type="button"
+            className={`setting${settingsIndex === index ? ' selected' : ''}`}
+            onClick={() => changeSetting(index)}
+          >
+            <span>{label}</span>
+            <span className="setting__value">{value}</span>
+          </button>
+        ))}
       </div>
       <PageBar
         hints={[
-          ['A', 'SWITCH'],
+          ['A', 'CHANGE'],
           ['B', 'BACK'],
         ]}
         blinkHints
@@ -34,14 +37,19 @@ const SettingsPanel = forwardRef(({ showTips, toggleTips, goHome }, ref) => {
 });
 
 SettingsPanel.propTypes = {
-  showTips: PropTypes.bool,
-  toggleTips: PropTypes.func,
+  // [{ label, value }] in display order
+  settings: PropTypes.arrayOf(
+    PropTypes.shape({ label: PropTypes.string, value: PropTypes.string }),
+  ),
+  settingsIndex: PropTypes.number,
+  changeSetting: PropTypes.func,
   goHome: PropTypes.func,
 };
 
 SettingsPanel.defaultProps = {
-  showTips: true,
-  toggleTips: () => {},
+  settings: [],
+  settingsIndex: 0,
+  changeSetting: () => {},
   goHome: () => {},
 };
 
