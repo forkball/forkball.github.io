@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import PageBar from './PageBar';
 import StuddedDivider from './StuddedDivider';
 
-const BioPanel = forwardRef(({ image, more }, ref) => {
+const BioPanel = forwardRef(({ image, more, goHome }, ref) => {
   return (
     <div
       ref={ref}
@@ -57,7 +57,7 @@ const BioPanel = forwardRef(({ image, more }, ref) => {
           <p>Feel free to connect through my social platforms!</p>
         </div>
       </div>
-      <PageBar hints={[['B', 'HOME']]} more={more} />
+      <PageBar more={more} onHome={goHome} />
     </div>
   );
 });
@@ -65,10 +65,12 @@ const BioPanel = forwardRef(({ image, more }, ref) => {
 BioPanel.propTypes = {
   image: PropTypes.string.isRequired,
   more: PropTypes.bool,
+  goHome: PropTypes.func,
 };
 
 BioPanel.defaultProps = {
   more: false,
+  goHome: () => {},
 };
 
 export default BioPanel;

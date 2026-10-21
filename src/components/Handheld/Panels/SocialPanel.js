@@ -10,7 +10,7 @@ const openEmail = (event) => {
   window.location.href = `mailto:${['erosdipede', 'gmail.com'].join('@')}`;
 };
 
-const SocialPanel = forwardRef(({ socialPanelIndex }, ref) => {
+const SocialPanel = forwardRef(({ socialPanelIndex, goHome }, ref) => {
   return (
     <div
       ref={ref}
@@ -75,22 +75,19 @@ const SocialPanel = forwardRef(({ socialPanelIndex }, ref) => {
           </div>
         </div>
       </div>
-      <PageBar
-        hints={[
-          ['A', 'OPEN'],
-          ['B', 'HOME'],
-        ]}
-      />
+      <PageBar hints={[['A', 'OPEN']]} onHome={goHome} />
     </div>
   );
 });
 
 SocialPanel.propTypes = {
   socialPanelIndex: PropTypes.number,
+  goHome: PropTypes.func,
 };
 
 SocialPanel.defaultProps = {
   socialPanelIndex: 0,
+  goHome: () => {},
 };
 
 export default SocialPanel;
