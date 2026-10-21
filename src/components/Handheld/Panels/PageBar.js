@@ -6,7 +6,8 @@ const HINT_SWAP_MS = 2000;
 // bottom bar of a panel, showing a control hint. With several hints they take
 // turns, so they don't read as one sentence. `more` floats a bobbing down
 // arrow just above the bar while there's text below. `onHome` adds a
-// tappable HOME button on the right, the on-screen twin of B.
+// tappable HOME button on the right for touch, while the hints guide
+// people using the device's buttons.
 function PageBar({ hints, blinkHints, more, onHome }) {
   const [hintIndex, setHintIndex] = useState(0);
 
