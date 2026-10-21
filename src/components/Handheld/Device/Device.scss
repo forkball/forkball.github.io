@@ -80,11 +80,32 @@
             zoom: 1.05;
         }
     }
-    // on phones both pads only fit side by side if the A/B pad, which has
-    // room to spare, gets narrower
+    // two pads side by side already fill a phone's width, so there the pads
+    // keep their AUTO size and only the buttons inside them grow
     @include mobile {
-        .handheld-input__panel--right .handheld-input__panel__controls {
-            width: 140px;
+        .handheld-input__panel__controls {
+            zoom: 1;
+        }
+        .handheld-input__panel__controls--a,
+        .handheld-input__panel__controls--b,
+        .handheld-input__panel__controls--c,
+        .handheld-input__panel__controls--d {
+            .button-wrapper {
+                width: 68px;
+                height: 68px;
+                @media (max-width: 360px), (max-height: 650px) {
+                    width: 56px;
+                    height: 56px;
+                }
+                button {
+                    width: 64px;
+                    height: 64px;
+                    @media (max-width: 360px), (max-height: 650px) {
+                        width: 52px;
+                        height: 52px;
+                    }
+                }
+            }
         }
     }
 }
