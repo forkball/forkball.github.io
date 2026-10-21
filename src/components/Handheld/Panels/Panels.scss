@@ -2,7 +2,11 @@
 
 .panel-social {
     a {
-        color: $color-panel-accent
+        color: $color-panel-accent;
+        // a taller tap area than the text, without moving the layout
+        display: inline-block;
+        padding: 12px 0;
+        margin: -12px 0;
     }
     a.selected {
         color: $color-device-secondary;
@@ -128,6 +132,7 @@
 
 // HOME button on the right of the page bar, closing the open app
 .page-bar__home {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -139,6 +144,15 @@
     &:hover,
     &:focus-visible {
         color: $color-device-secondary;
+    }
+    // stretch the tap area above the short bar to a comfortable 44px
+    &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: -16px;
+        bottom: 0;
     }
 }
 
