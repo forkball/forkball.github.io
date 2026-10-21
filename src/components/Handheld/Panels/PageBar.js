@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import TipsContext from '../TipsContext';
 
 const HINT_SWAP_MS = 2000;
 
@@ -7,8 +8,9 @@ const HINT_SWAP_MS = 2000;
 // turns, so they don't read as one sentence. `more` floats a bobbing down
 // arrow just above the bar while there's text below. `onHome` adds a
 // tappable HOME button on the right for touch, while the hints guide
-// people using the device's buttons.
+// people using the device's buttons, unless turned off in SETTINGS.
 function PageBar({ hints, blinkHints, more, onHome }) {
+  const showTips = useContext(TipsContext);
   const [hintIndex, setHintIndex] = useState(0);
 
   useEffect(() => {
@@ -17,7 +19,7 @@ function PageBar({ hints, blinkHints, more, onHome }) {
     return () => clearInterval(timer);
   }, [hints.length]);
 
-  const hint = hints.length > 0 ? hints[hintIndex % hints.length] : null;
+  const hint = showTips && hints.length > 0 ? hints[hintIndex % hints.length] : null;
   return (
     <div className="handheld-screen__interface__content__page flex items-center mt-auto">
       {more && (

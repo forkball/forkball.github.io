@@ -13,12 +13,29 @@
     }
 }
 
+// settings: label on the left, current value on the right
+.panel-settings {
+    h2 {
+        margin-bottom: 8px;
+    }
+    .setting {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        color: $color-panel-accent;
+        &.selected {
+            color: $color-device-secondary;
+        }
+    }
+}
+
 // home screen: a grid of app tiles
 .panel-home {
     &__grid {
         margin-top: 8px;
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        // two apps per row, matching HOME_COLUMNS
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 16px 8px;
     }
 }
