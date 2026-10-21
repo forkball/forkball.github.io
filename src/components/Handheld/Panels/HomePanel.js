@@ -111,7 +111,7 @@ const HomePanel = forwardRef(({ homeIndex, openApp }, ref) => {
           </li>
         ))}
       </ol>
-      <PageBar hints={[['A', 'OPEN']]} blinkHints />
+      <PageBar hints={[['A', 'SELECT']]} blinkHints />
     </div>
   );
 });

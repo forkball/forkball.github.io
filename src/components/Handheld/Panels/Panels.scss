@@ -95,7 +95,8 @@
     padding-left: 8px;
 }
 
-// blinking control hint in the page bar
+// blinking control hint in the page bar; PageBar reads this duration to
+// time hint changes, so it can be tuned here alone
 .page-hint--blink {
     animation: pixel-blink 1.25s steps(1, end) infinite;
 }

@@ -77,7 +77,7 @@ const SocialPanel = forwardRef(({ socialPanelIndex, goHome }, ref) => {
       </div>
       <PageBar
         hints={[
-          ['A', 'OPEN'],
+          ['A', 'SELECT'],
           ['B', 'BACK'],
         ]}
         blinkHints
