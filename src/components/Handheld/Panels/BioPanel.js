@@ -57,7 +57,7 @@ const BioPanel = forwardRef(({ image, more, goHome }, ref) => {
           <p>Feel free to connect through my social platforms!</p>
         </div>
       </div>
-      <PageBar hints={[['B', 'HOME']]} more={more} onHome={goHome} />
+      <PageBar hints={[['B', 'BACK']]} more={more} onHome={goHome} />
     </div>
   );
 });

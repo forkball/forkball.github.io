@@ -78,7 +78,7 @@ const SocialPanel = forwardRef(({ socialPanelIndex, goHome }, ref) => {
       <PageBar
         hints={[
           ['A', 'OPEN'],
-          ['B', 'HOME'],
+          ['B', 'BACK'],
         ]}
         onHome={goHome}
       />
