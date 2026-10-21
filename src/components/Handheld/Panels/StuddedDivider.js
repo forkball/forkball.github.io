@@ -1,6 +1,11 @@
 import React from 'react';
 
-const STUD_POSITIONS = [6, 18, 30, 42, 58, 70, 82, 94];
+const NUMBER_OF_STUDS = 8;
+// evenly spaced, each centred in its own equal slice of the rule
+const STUD_POSITIONS = Array.from(
+  { length: NUMBER_OF_STUDS },
+  (_, index) => ((index + 0.5) * 100) / NUMBER_OF_STUDS,
+);
 
 // Pokédex-style divider: a thick rule with square studs along it
 function StuddedDivider() {
