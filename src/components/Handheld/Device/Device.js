@@ -2,27 +2,24 @@ import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Screen } from '../Components';
 import Input from '../Components/Input';
-import { SECTIONS } from '../../../constants';
+import { APPS, HOME_COLUMNS, SECTIONS } from '../../../constants';
 import './Device.scss';
 
 // index of the last selectable entry on the socials page (the email)
 const NUMBER_OF_SOCIAL_LINKS = 4;
 const MINIMUM_HORIZONTAL_VIEW_HEIGHT = 900;
 const MAXIMUM_HORIZONTAL_VIEW_WIDTH = 728;
-const MAXIMUM_MENU_INDEX = Object.keys(SECTIONS).length - 1;
 function Device({ classes }) {
   const panelRef = useRef(null);
 
   const [screenSections, setScreenSections] = useState({});
   const [sectionPosition, setSectionPosition] = useState(0);
 
-  const [showMenu, setShowMenu] = useState(false);
-  const [menuIndex, setMenuIndex] = useState(0);
-  const [panelSet, setPanelSet] = useState(0);
+  const [homeIndex, setHomeIndex] = useState(0);
+  const [panelSet, setPanelSet] = useState(SECTIONS.HOME);
   const [socialPanelIndex, setSocialPanelIndex] = useState(0);
   const [windowHeight, setWindowHeight] = useState(0);
   const [windowWidth, setWindowWidth] = useState(0);
-  const [hasOpenedMenu, setHasOpenedMenu] = useState(false);
 
   // divide the screen into sections for better readability in scrolling
   const setSections = () => {
@@ -58,99 +55,126 @@ function Device({ classes }) {
     }
   };
 
-  // every section is a single page, so left and right have nothing to flip
-  const onLeftPress = () => {};
-  const onRightPress = () => {};
+  const onHome = panelSet === SECTIONS.HOME;
 
-  // switch to a section from the top
+  // move the cursor on the home screen's app grid, stopping at its edges;
+  // reads the latest index so quick repeated presses each move one tile
+  const moveHomeCursor = (step) => {
+    setHomeIndex((index) => {
+      const next = index + step;
+      if (next < 0 || next >= APPS.length) return index;
+      // left and right stay on the same row
+      if (
+        Math.abs(step) === 1 &&
+        Math.floor(next / HOME_COLUMNS) !== Math.floor(index / HOME_COLUMNS)
+      )
+        return index;
+      return next;
+    });
+  };
+
+  // open an app from the top
   const openSection = (section) => {
     setPanelSet(section);
-    setMenuIndex(section);
     setSectionPosition(0);
-    setShowMenu(false);
+  };
+
+  // back to the home screen, with the cursor on the app just closed
+  const goHome = () => {
+    const appIndex = APPS.findIndex(({ section }) => section === panelSet);
+    if (appIndex >= 0) setHomeIndex(appIndex);
+    setPanelSet(SECTIONS.HOME);
+  };
+
+  // apps are single pages, so left and right only move around the home screen
+  const onLeftPress = () => {
+    if (onHome) moveHomeCursor(-1);
+  };
+  const onRightPress = () => {
+    if (onHome) moveHomeCursor(1);
   };
 
   // navigate up
   const onUpPress = () => {
-    if (!showMenu) {
-      switch (panelSet) {
-        case SECTIONS.SOCIALS:
-          if (socialPanelIndex > 0) setSocialPanelIndex(socialPanelIndex - 1);
-          break;
-        default:
-          if (panelRef.current) {
-            scroll(-1);
-          }
-          break;
-      }
-    } else if (menuIndex > 0) setMenuIndex(menuIndex - 1);
+    switch (panelSet) {
+      case SECTIONS.HOME:
+        moveHomeCursor(-HOME_COLUMNS);
+        break;
+      case SECTIONS.SOCIALS:
+        if (socialPanelIndex > 0) setSocialPanelIndex(socialPanelIndex - 1);
+        break;
+      default:
+        if (panelRef.current) {
+          scroll(-1);
+        }
+        break;
+    }
   };
 
   // navigate down
   const onDownPress = () => {
-    if (!showMenu) {
-      switch (panelSet) {
-        case SECTIONS.SOCIALS:
-          if (socialPanelIndex < NUMBER_OF_SOCIAL_LINKS) setSocialPanelIndex(socialPanelIndex + 1);
-          break;
-        default:
-          if (panelRef.current) {
-            scroll(1);
-          }
-          break;
-      }
-    } else if (menuIndex < MAXIMUM_MENU_INDEX) setMenuIndex(menuIndex + 1);
-  };
-
-  // show navigation menu on start press
-  const onStartPress = () => {
-    setShowMenu(!showMenu);
-    setHasOpenedMenu(true);
-  };
-
-  // interact ui, selects items
-  const onAButtonPress = (index = -1) => {
-    if (showMenu) {
-      openSection(index >= 0 ? index : menuIndex);
-    } else {
-      // handle a button behavior based on panel set
-      switch (panelSet) {
-        case SECTIONS.SOCIALS: {
-          const anchors = document
-            .getElementsByClassName('panel-social')[0]
-            .getElementsByTagName('a');
-          anchors[socialPanelIndex].click();
-          break;
+    switch (panelSet) {
+      case SECTIONS.HOME:
+        moveHomeCursor(HOME_COLUMNS);
+        break;
+      case SECTIONS.SOCIALS:
+        if (socialPanelIndex < NUMBER_OF_SOCIAL_LINKS) setSocialPanelIndex(socialPanelIndex + 1);
+        break;
+      default:
+        if (panelRef.current) {
+          scroll(1);
         }
-        default:
-          break;
-      }
+        break;
     }
   };
 
-  // back out of the menu; outside it B does nothing
+  // start always returns to the home screen
+  const onStartPress = () => {
+    if (!onHome) goHome();
+  };
+
+  // interact ui, opens apps and selects items
+  const onAButtonPress = () => {
+    switch (panelSet) {
+      case SECTIONS.HOME:
+        openSection(APPS[homeIndex].section);
+        break;
+      case SECTIONS.SOCIALS: {
+        const anchors = document
+          .getElementsByClassName('panel-social')[0]
+          .getElementsByTagName('a');
+        anchors[socialPanelIndex].click();
+        break;
+      }
+      default:
+        break;
+    }
+  };
+
+  // close the open app; on the home screen B does nothing
   const onBButtonPress = () => {
-    if (showMenu) setShowMenu(false);
+    if (!onHome) goHome();
   };
 
   // map keyboard keys to the device buttons
   const handleKeyDown = (event) => {
     if (event.altKey || event.ctrlKey || event.metaKey) return;
-    // links and menu items on the screen itself, not the device's own buttons
+    // app tiles and links on the screen itself, not the device's own buttons
     const onScreenControl =
       ['BUTTON', 'A'].includes(event.target.tagName) && event.target.closest('.handheld-screen');
     const keyHandlers = {
       ArrowUp: onUpPress,
       ArrowDown: onDownPress,
-      // enter opens the menu on every page and selects inside it; links open with A
-      Enter: showMenu ? () => onAButtonPress() : onStartPress,
-      Escape: showMenu ? onBButtonPress : onStartPress,
+      ArrowLeft: onLeftPress,
+      ArrowRight: onRightPress,
+      Enter: onAButtonPress,
+      Escape: onBButtonPress,
       Backspace: onBButtonPress,
       // the A and B keys match the on-screen hints
-      a: () => onAButtonPress(),
+      a: onAButtonPress,
       b: onBButtonPress,
     };
-    // let enter activate a focused on-screen menu item or link natively
+    // let enter activate a focused on-screen app tile or link natively
     if (event.key === 'Enter' && onScreenControl) return;
     const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
     const handler = keyHandlers[key];
@@ -164,8 +188,6 @@ function Device({ classes }) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   });
 
-  const menuControls = Object.values(SECTIONS).map((section) => () => openSection(section));
-
   const renderVerticalDevice = () => (
     <div className={`handheld flex flex-col shadow-lg ${classes}`}>
       <h1 className="mt-auto w-full">
@@ -175,11 +197,9 @@ function Device({ classes }) {
         <Screen
           ref={panelRef}
           panelSet={panelSet}
-          showMenu={showMenu}
-          menuIndex={menuIndex}
-          menuControls={menuControls}
+          homeIndex={homeIndex}
+          openApp={openSection}
           socialPanelIndex={socialPanelIndex}
-          showHint={!hasOpenedMenu}
         />
       </div>
       <div className="handheld__input flex flex-col w-full h-full self-center">
@@ -208,6 +228,7 @@ function Device({ classes }) {
           handleRight={onRightPress}
           handleDown={onDownPress}
           handleUp={onUpPress}
+          handleSelect={onStartPress}
           handleStart={onStartPress}
           handleA={onAButtonPress}
           handleB={onBButtonPress}
@@ -215,11 +236,9 @@ function Device({ classes }) {
             <Screen
               ref={panelRef}
               panelSet={panelSet}
-              showMenu={showMenu}
-              menuIndex={menuIndex}
-              menuControls={menuControls}
+              homeIndex={homeIndex}
+              openApp={openSection}
               socialPanelIndex={socialPanelIndex}
-              showHint={!hasOpenedMenu}
             />
           }
         />

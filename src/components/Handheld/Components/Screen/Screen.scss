@@ -81,52 +81,6 @@ $page-bar-height: 28px;
       height: 100%;
     }
     
-    // classic RPG menu box: double border and a cursor on the selected item
-    &__menu {
-      background-color: $color-white;
-      border: 4px double $color-panel-accent;
-      padding: 16px;
-      // leave the narrow phone menu as much room as possible for the text
-      @media (max-width: 500px) {
-        padding: 12px 8px;
-      }
-      // on the smallest phones half the screen can't fit SOCIALS, so widen it
-      @media (max-width: 340px) {
-        width: 60% !important;
-      }
-      &__items {
-        color: $color-panel-accent;
-        li {
-          position: relative;
-          padding-left: 20px;
-        }
-        &__item--selected::before {
-          content: '';
-          position: absolute;
-          left: 0;
-          top: 50%;
-          transform: translateY(-55%);
-          width: 10px;
-          height: 12px;
-          background-color: $color-panel-accent;
-          clip-path: polygon(0 0, 100% 50%, 0 100%);
-        }
-      }
-      &__hints {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-        color: $color-panel-accent;
-        // smaller than the items and never wrapped, so each hint fits the
-        // half-width menu on a phone
-        white-space: nowrap;
-        p {
-          font-size: 14px;
-          line-height: unset;
-        }
-      }
-    }
-  
     // to do, move panel styles to individual components
     &__content {
       // clear the Pokédex frame drawn just inside the screen edge, and stop
