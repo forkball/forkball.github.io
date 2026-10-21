@@ -269,10 +269,16 @@ function Device({ classes }) {
     handler();
   };
 
+  // the listener reads the handler from a ref updated on every render, so a
+  // key pressed right after another (Right then Enter) sees the new state
+  // rather than waiting for the listener to be re-attached
+  const keyDownRef = useRef(handleKeyDown);
+  keyDownRef.current = handleKeyDown;
   useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  });
+    const onKeyDown = (event) => keyDownRef.current(event);
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, []);
 
   const renderVerticalDevice = () => (
     <div
