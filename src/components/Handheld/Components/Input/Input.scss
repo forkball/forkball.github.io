@@ -66,10 +66,14 @@
           width: 60px;
           height: 36px;
         }
-        // smallest mobile
+        // phones: big enough to tap comfortably
         @include mobile  {
-          width: 52px;
-          height: 28px;
+          width: 68px;
+          height: 36px;
+          @media (max-width: 360px), (max-height: 650px) {
+            width: 52px;
+            height: 28px;
+          }
         }
 
         button {
@@ -82,10 +86,13 @@
             width: 56px;
             height: 32px;
           }
-          // smallest mobile
           @include mobile  {
-            width: 48px;
-            height: 24px;
+            width: 64px;
+            height: 32px;
+            @media (max-width: 360px), (max-height: 650px) {
+              width: 48px;
+              height: 24px;
+            }
           }
         }
       } 
@@ -104,9 +111,13 @@
           height: 168px;
         }
         @include mobile {
-          width: 140px;
-          height: 140px;
+          width: 172px;
+          height: 172px;
           padding: 8px;
+          @media (max-width: 360px), (max-height: 650px) {
+            width: 140px;
+            height: 140px;
+          }
         }
 
         &--a,&--b,&--c,&--d {
@@ -119,10 +130,14 @@
               width: 60px;
               height: 60px;
             }
-            // smallest mobile
+            // phones: larger thumb targets, shrinking on small screens
             @include mobile  {
-              width: 52px;
-              height: 52px;
+              width: 60px;
+              height: 60px;
+              @media (max-width: 360px) {
+                width: 52px;
+                height: 52px;
+              }
               @media (max-height: 650px) {
                 width: 48px;
                 height: 48px;
@@ -137,10 +152,13 @@
                 width: 56px;
                 height: 56px;
               }
-              // smallest mobile
               @include mobile  {
-                width: 48px;
-                height: 48px;
+                width: 56px;
+                height: 56px;
+                @media (max-width: 360px) {
+                  width: 48px;
+                  height: 48px;
+                }
                 @media (max-height: 650px) {
                   width: 44px;
                   height: 44px;
