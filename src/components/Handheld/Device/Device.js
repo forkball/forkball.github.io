@@ -11,15 +11,34 @@ const NUMBER_OF_SOCIAL_LINKS = 4;
 const MINIMUM_HORIZONTAL_VIEW_HEIGHT = 900;
 const MAXIMUM_HORIZONTAL_VIEW_WIDTH = 728;
 const TIPS_STORAGE_KEY = 'handheld-tips';
+const BUTTON_SIZE_STORAGE_KEY = 'handheld-buttons';
+// AUTO sizes the controls to the screen; LARGE and SMALL scale from there
+const BUTTON_SIZES = ['AUTO', 'LARGE', 'SMALL'];
+// rows on the settings page, in order
+const SETTING_TIPS = 0;
+const SETTING_BUTTONS = 1;
+const NUMBER_OF_SETTINGS = 2;
 
-// the tips setting is remembered per browser; storage can be blocked, in
-// which case tips stay on and the switch only lasts for the visit
-const loadShowTips = () => {
+// settings are remembered per browser; storage can be blocked, in which case
+// the defaults return on the next visit
+const loadSetting = (key) => {
   try {
-    return window.localStorage.getItem(TIPS_STORAGE_KEY) !== 'off';
+    return window.localStorage.getItem(key);
   } catch (error) {
-    return true;
+    return null;
   }
+};
+const saveSetting = (key, value) => {
+  try {
+    window.localStorage.setItem(key, value);
+  } catch (error) {
+    // storage blocked: keep the setting for this visit only
+  }
+};
+const loadShowTips = () => loadSetting(TIPS_STORAGE_KEY) !== 'off';
+const loadButtonSize = () => {
+  const size = loadSetting(BUTTON_SIZE_STORAGE_KEY);
+  return BUTTON_SIZES.includes(size) ? size : BUTTON_SIZES[0];
 };
 function Device({ classes }) {
   const panelRef = useRef(null);
@@ -31,6 +50,8 @@ function Device({ classes }) {
   const [panelSet, setPanelSet] = useState(SECTIONS.HOME);
   const [socialPanelIndex, setSocialPanelIndex] = useState(0);
   const [showTips, setShowTips] = useState(loadShowTips);
+  const [buttonSize, setButtonSize] = useState(loadButtonSize);
+  const [settingsIndex, setSettingsIndex] = useState(0);
   const [windowHeight, setWindowHeight] = useState(0);
   const [windowWidth, setWindowWidth] = useState(0);
 
@@ -118,6 +139,9 @@ function Device({ classes }) {
       case SECTIONS.HOME:
         moveHomeCursor(-HOME_COLUMNS);
         break;
+      case SECTIONS.SETTINGS:
+        if (settingsIndex > 0) setSettingsIndex(settingsIndex - 1);
+        break;
       case SECTIONS.SOCIALS:
         if (socialPanelIndex > 0) setSocialPanelIndex(socialPanelIndex - 1);
         break;
@@ -135,6 +159,9 @@ function Device({ classes }) {
       case SECTIONS.HOME:
         moveHomeCursor(HOME_COLUMNS);
         break;
+      case SECTIONS.SETTINGS:
+        if (settingsIndex < NUMBER_OF_SETTINGS - 1) setSettingsIndex(settingsIndex + 1);
+        break;
       case SECTIONS.SOCIALS:
         if (socialPanelIndex < NUMBER_OF_SOCIAL_LINKS) setSocialPanelIndex(socialPanelIndex + 1);
         break;
@@ -146,16 +173,23 @@ function Device({ classes }) {
     }
   };
 
-  // turn the page bar hints on or off
-  const toggleTips = () => {
-    const next = !showTips;
-    setShowTips(next);
-    try {
-      window.localStorage.setItem(TIPS_STORAGE_KEY, next ? 'on' : 'off');
-    } catch (error) {
-      // storage blocked: keep the setting for this visit only
+  // select a settings row and step it to its next value
+  const changeSetting = (index) => {
+    setSettingsIndex(index);
+    if (index === SETTING_TIPS) {
+      setShowTips(!showTips);
+      saveSetting(TIPS_STORAGE_KEY, showTips ? 'off' : 'on');
+    } else if (index === SETTING_BUTTONS) {
+      const next = BUTTON_SIZES[(BUTTON_SIZES.indexOf(buttonSize) + 1) % BUTTON_SIZES.length];
+      setButtonSize(next);
+      saveSetting(BUTTON_SIZE_STORAGE_KEY, next);
     }
   };
+
+  const settings = [
+    { label: 'TIPS', value: showTips ? 'ON' : 'OFF' },
+    { label: 'BUTTONS', value: buttonSize },
+  ];
 
   // start always returns to the home screen
   const onStartPress = () => {
@@ -169,7 +203,7 @@ function Device({ classes }) {
         openSection(APPS[homeIndex].section);
         break;
       case SECTIONS.SETTINGS:
-        toggleTips();
+        changeSetting(settingsIndex);
         break;
       case SECTIONS.SOCIALS: {
         const anchors = document
@@ -221,7 +255,9 @@ function Device({ classes }) {
   });
 
   const renderVerticalDevice = () => (
-    <div className={`handheld flex flex-col shadow-lg ${classes}`}>
+    <div
+      className={`handheld handheld--buttons-${buttonSize.toLowerCase()} flex flex-col shadow-lg ${classes}`}
+    >
       <h1 className="mt-auto w-full">
         <a href="https://forkball.ca">forkball</a>
       </h1>
@@ -232,8 +268,9 @@ function Device({ classes }) {
           homeIndex={homeIndex}
           openApp={openSection}
           goHome={goHome}
-          showTips={showTips}
-          toggleTips={toggleTips}
+          settings={settings}
+          settingsIndex={settingsIndex}
+          changeSetting={changeSetting}
           socialPanelIndex={socialPanelIndex}
         />
       </div>
@@ -253,7 +290,9 @@ function Device({ classes }) {
   );
 
   const renderHorizontalDevice = () => (
-    <div className={`handheld handheld--horizontal flex flex-col shadow-lg ${classes}`}>
+    <div
+      className={`handheld handheld--horizontal handheld--buttons-${buttonSize.toLowerCase()} flex flex-col shadow-lg ${classes}`}
+    >
       <h1 className="w-full self-center">
         <a href="https://forkball.ca">forkball</a>
       </h1>
@@ -274,8 +313,9 @@ function Device({ classes }) {
               homeIndex={homeIndex}
               openApp={openSection}
               goHome={goHome}
-              showTips={showTips}
-              toggleTips={toggleTips}
+              settings={settings}
+              settingsIndex={settingsIndex}
+              changeSetting={changeSetting}
               socialPanelIndex={socialPanelIndex}
             />
           }
