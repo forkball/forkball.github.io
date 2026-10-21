@@ -26,7 +26,7 @@ const SettingsPanel = forwardRef(({ settings, settingsIndex, changeSetting, goHo
       </div>
       <PageBar
         hints={[
-          ['A', 'CHANGE'],
+          ['A', 'SELECT'],
           ['B', 'BACK'],
         ]}
         blinkHints

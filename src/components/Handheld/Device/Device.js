@@ -12,6 +12,8 @@ const MINIMUM_HORIZONTAL_VIEW_HEIGHT = 900;
 const MAXIMUM_HORIZONTAL_VIEW_WIDTH = 728;
 const TIPS_STORAGE_KEY = 'handheld-tips';
 const BUTTON_SIZE_STORAGE_KEY = 'handheld-buttons';
+// control hints: blinking, steady, or hidden
+const TIP_MODES = ['BLINK', 'ON', 'OFF'];
 // AUTO sizes the controls to the screen; LARGE and SMALL scale from there
 const BUTTON_SIZES = ['AUTO', 'LARGE', 'SMALL'];
 // rows on the settings page, in order
@@ -35,7 +37,12 @@ const saveSetting = (key, value) => {
     // storage blocked: keep the setting for this visit only
   }
 };
-const loadShowTips = () => loadSetting(TIPS_STORAGE_KEY) !== 'off';
+const loadTipMode = () => {
+  const mode = loadSetting(TIPS_STORAGE_KEY);
+  // 'off' was saved by the earlier on/off switch
+  if (mode === 'off') return 'OFF';
+  return TIP_MODES.includes(mode) ? mode : TIP_MODES[0];
+};
 const loadButtonSize = () => {
   const size = loadSetting(BUTTON_SIZE_STORAGE_KEY);
   return BUTTON_SIZES.includes(size) ? size : BUTTON_SIZES[0];
@@ -49,7 +56,7 @@ function Device({ classes }) {
   const [homeIndex, setHomeIndex] = useState(0);
   const [panelSet, setPanelSet] = useState(SECTIONS.HOME);
   const [socialPanelIndex, setSocialPanelIndex] = useState(0);
-  const [showTips, setShowTips] = useState(loadShowTips);
+  const [tipMode, setTipMode] = useState(loadTipMode);
   const [buttonSize, setButtonSize] = useState(loadButtonSize);
   const [settingsIndex, setSettingsIndex] = useState(0);
   const [windowHeight, setWindowHeight] = useState(0);
@@ -184,8 +191,9 @@ function Device({ classes }) {
   const changeSetting = (index) => {
     setSettingsIndex(index);
     if (index === SETTING_TIPS) {
-      setShowTips(!showTips);
-      saveSetting(TIPS_STORAGE_KEY, showTips ? 'off' : 'on');
+      const next = TIP_MODES[(TIP_MODES.indexOf(tipMode) + 1) % TIP_MODES.length];
+      setTipMode(next);
+      saveSetting(TIPS_STORAGE_KEY, next);
     } else if (index === SETTING_BUTTONS) {
       const next = BUTTON_SIZES[(BUTTON_SIZES.indexOf(buttonSize) + 1) % BUTTON_SIZES.length];
       setButtonSize(next);
@@ -194,7 +202,7 @@ function Device({ classes }) {
   };
 
   const settings = [
-    { label: 'TIPS', value: showTips ? 'ON' : 'OFF' },
+    { label: 'TIPS', value: tipMode },
     { label: 'BUTTONS', value: buttonSize },
   ];
 
@@ -350,8 +358,11 @@ function Device({ classes }) {
     </div>
   );
 
+  // every page opens at the top, with its own cursor back on the first item
   useEffect(() => {
     setSections();
+    setSocialPanelIndex(0);
+    setSettingsIndex(0);
   }, [panelSet]);
 
   // follow the back and forward buttons between the home screen and apps
@@ -378,8 +389,8 @@ function Device({ classes }) {
   }, []);
 
   if (windowHeight < MINIMUM_HORIZONTAL_VIEW_HEIGHT && windowWidth > MAXIMUM_HORIZONTAL_VIEW_WIDTH)
-    return <TipsContext.Provider value={showTips}>{renderHorizontalDevice()}</TipsContext.Provider>;
-  return <TipsContext.Provider value={showTips}>{renderVerticalDevice()}</TipsContext.Provider>;
+    return <TipsContext.Provider value={tipMode}>{renderHorizontalDevice()}</TipsContext.Provider>;
+  return <TipsContext.Provider value={tipMode}>{renderVerticalDevice()}</TipsContext.Provider>;
 }
 
 Device.propTypes = {
