@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Screen } from '../Components';
 import Input from '../Components/Input';
-import TipsContext from '../TipsContext';
+import SettingsContext from '../SettingsContext';
 import { APPS, HOME_COLUMNS, SECTIONS } from '../../../constants';
 import './Device.scss';
 
@@ -12,6 +12,7 @@ const MINIMUM_HORIZONTAL_VIEW_HEIGHT = 900;
 const MAXIMUM_HORIZONTAL_VIEW_WIDTH = 728;
 const TIPS_STORAGE_KEY = 'handheld-tips';
 const BUTTON_SIZE_STORAGE_KEY = 'handheld-buttons';
+const HOME_BUTTON_STORAGE_KEY = 'handheld-home-button';
 // control hints: blinking, steady, or hidden
 const TIP_MODES = ['BLINK', 'ON', 'OFF'];
 // AUTO sizes the controls to the screen; LARGE and SMALL scale from there
@@ -19,7 +20,8 @@ const BUTTON_SIZES = ['AUTO', 'LARGE', 'SMALL'];
 // rows on the settings page, in order
 const SETTING_TIPS = 0;
 const SETTING_BUTTONS = 1;
-const NUMBER_OF_SETTINGS = 2;
+const SETTING_HOME_BUTTON = 2;
+const NUMBER_OF_SETTINGS = 3;
 
 // settings are remembered per browser; storage can be blocked, in which case
 // the defaults return on the next visit
@@ -43,6 +45,7 @@ const loadTipMode = () => {
   if (mode === 'off') return 'OFF';
   return TIP_MODES.includes(mode) ? mode : TIP_MODES[0];
 };
+const loadShowHomeButton = () => loadSetting(HOME_BUTTON_STORAGE_KEY) !== 'OFF';
 const loadButtonSize = () => {
   const size = loadSetting(BUTTON_SIZE_STORAGE_KEY);
   return BUTTON_SIZES.includes(size) ? size : BUTTON_SIZES[0];
@@ -57,6 +60,7 @@ function Device({ classes }) {
   const [panelSet, setPanelSet] = useState(SECTIONS.HOME);
   const [socialPanelIndex, setSocialPanelIndex] = useState(0);
   const [tipMode, setTipMode] = useState(loadTipMode);
+  const [showHomeButton, setShowHomeButton] = useState(loadShowHomeButton);
   const [buttonSize, setButtonSize] = useState(loadButtonSize);
   const [settingsIndex, setSettingsIndex] = useState(0);
   const [windowHeight, setWindowHeight] = useState(0);
@@ -198,13 +202,18 @@ function Device({ classes }) {
       const next = BUTTON_SIZES[(BUTTON_SIZES.indexOf(buttonSize) + 1) % BUTTON_SIZES.length];
       setButtonSize(next);
       saveSetting(BUTTON_SIZE_STORAGE_KEY, next);
+    } else if (index === SETTING_HOME_BUTTON) {
+      setShowHomeButton(!showHomeButton);
+      saveSetting(HOME_BUTTON_STORAGE_KEY, showHomeButton ? 'OFF' : 'ON');
     }
   };
 
   const settings = [
     { label: 'TIPS', value: tipMode },
     { label: 'BUTTONS', value: buttonSize },
+    { label: 'HOME BUTTON', value: showHomeButton ? 'ON' : 'OFF' },
   ];
+  const displaySettings = useMemo(() => ({ tipMode, showHomeButton }), [tipMode, showHomeButton]);
 
   // start opens settings from anywhere, and closes them back to where you were
   const onStartPress = () => {
@@ -367,6 +376,10 @@ function Device({ classes }) {
 
   // follow the back and forward buttons between the home screen and apps
   useEffect(() => {
+    // the device always starts on the home screen, so forget any app a
+    // reload left in this history entry; otherwise going back from the next
+    // app would land on that one instead of home
+    window.history.replaceState(null, '');
     const onPopState = (event) => {
       const section = event.state ? event.state.section : undefined;
       setPanelSet(section !== undefined ? section : SECTIONS.HOME);
@@ -389,8 +402,16 @@ function Device({ classes }) {
   }, []);
 
   if (windowHeight < MINIMUM_HORIZONTAL_VIEW_HEIGHT && windowWidth > MAXIMUM_HORIZONTAL_VIEW_WIDTH)
-    return <TipsContext.Provider value={tipMode}>{renderHorizontalDevice()}</TipsContext.Provider>;
-  return <TipsContext.Provider value={tipMode}>{renderVerticalDevice()}</TipsContext.Provider>;
+    return (
+      <SettingsContext.Provider value={displaySettings}>
+        {renderHorizontalDevice()}
+      </SettingsContext.Provider>
+    );
+  return (
+    <SettingsContext.Provider value={displaySettings}>
+      {renderVerticalDevice()}
+    </SettingsContext.Provider>
+  );
 }
 
 Device.propTypes = {
