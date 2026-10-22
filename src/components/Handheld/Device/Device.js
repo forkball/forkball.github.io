@@ -10,6 +10,10 @@ import './Device.scss';
 const NUMBER_OF_SOCIAL_LINKS = 4;
 const MINIMUM_HORIZONTAL_VIEW_HEIGHT = 900;
 const MAXIMUM_HORIZONTAL_VIEW_WIDTH = 728;
+// screens at least this much wider than tall get the landscape device even
+// when they're tall enough for the portrait one, so wide monitors aren't
+// mostly empty
+const MINIMUM_WIDE_ASPECT_RATIO = 1.6;
 const TIPS_STORAGE_KEY = 'handheld-tips';
 const BUTTON_SIZE_STORAGE_KEY = 'handheld-buttons';
 const HOME_BUTTON_STORAGE_KEY = 'handheld-home-button';
@@ -401,7 +405,11 @@ function Device({ classes }) {
     return () => window.removeEventListener('resize', updateSize);
   }, []);
 
-  if (windowHeight < MINIMUM_HORIZONTAL_VIEW_HEIGHT && windowWidth > MAXIMUM_HORIZONTAL_VIEW_WIDTH)
+  const wideScreen = windowWidth >= windowHeight * MINIMUM_WIDE_ASPECT_RATIO;
+  if (
+    windowWidth > MAXIMUM_HORIZONTAL_VIEW_WIDTH &&
+    (windowHeight < MINIMUM_HORIZONTAL_VIEW_HEIGHT || wideScreen)
+  )
     return (
       <SettingsContext.Provider value={displaySettings}>
         {renderHorizontalDevice()}
