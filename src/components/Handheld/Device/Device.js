@@ -406,7 +406,11 @@ function Device({ classes }) {
   }, []);
 
   const wideScreen = windowWidth >= windowHeight * MINIMUM_WIDE_ASPECT_RATIO;
+  // portrait screens (tablets held upright) always get the portrait device;
+  // the landscape one would be a short strip with empty space above and below
+  const landscape = windowWidth > windowHeight;
   if (
+    landscape &&
     windowWidth > MAXIMUM_HORIZONTAL_VIEW_WIDTH &&
     (windowHeight < MINIMUM_HORIZONTAL_VIEW_HEIGHT || wideScreen)
   )

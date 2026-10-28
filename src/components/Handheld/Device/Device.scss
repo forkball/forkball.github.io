@@ -41,6 +41,24 @@
             }
         }
     }
+    // tablets held upright: scale the device up to fill most of the height
+    // rather than sitting small in the middle (it's 740px tall unscaled)
+    &:not(.handheld--horizontal) {
+        @media (orientation: portrait) and (min-width: $tablet) and (max-width: $desktop) {
+            @media (min-height: 860px) {
+                zoom: 1.1;
+            }
+            @media (min-height: 1000px) {
+                zoom: 1.25;
+            }
+            @media (min-height: 1150px) {
+                zoom: 1.45;
+            }
+            @media (min-height: 1300px) {
+                zoom: 1.6;
+            }
+        }
+    }
     // horizontal handheld variant
     &--horizontal {
         gap: 0px;

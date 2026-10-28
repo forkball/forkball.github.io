@@ -136,6 +136,12 @@ $page-bar-height: 28px;
       height: 144px;
       image-rendering: pixelated;
       transform: scaleX(-1);
+      // the tablet screen is only 360px wide: at full size the name and
+      // title beside the sprite get cut off
+      @include tablet {
+        width: 102px;
+        height: 96px;
+      }
       @media (max-width: 500px) {
         width: 102px;
         height: 96px;
@@ -152,6 +158,11 @@ $page-bar-height: 28px;
     display: flex;
     flex-direction: column;
     gap: 6px;
+    @include tablet {
+      p {
+        font-size: 14px;
+      }
+    }
     @media (max-width: 500px) {
       p {
         font-size: 14px;
