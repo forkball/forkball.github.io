@@ -41,7 +41,8 @@
         display: grid;
         // two apps per row, matching HOME_COLUMNS
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 16px 8px;
+        // tight rows, so all three fit on most phones without scrolling
+        gap: 4px 8px;
     }
 }
 
@@ -51,7 +52,7 @@
     align-items: center;
     gap: 8px;
     width: 100%;
-    padding: 6px 0;
+    padding: 4px 0;
     color: $color-panel-accent;
     // scrolled to with room to spare above the floating down arrow
     scroll-margin: 16px 0 40px;
