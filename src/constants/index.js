@@ -26,6 +26,8 @@ export const PROJECTS = [
   },
   {
     name: 'DRAFT PARTY',
+    blurb:
+      'A live auction draft game: build a festival lineup with friends, then vote on the best.',
     link: 'https://draft-party-topaz.vercel.app',
     linkLabel: 'VISIT',
   },

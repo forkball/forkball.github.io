@@ -21,7 +21,6 @@ const ProjectsPanel = forwardRef(({ projectIndex, more, goHome }, ref) => {
       className="handheld-screen__interface__content panel-projects flex flex-col h-full w-full overflow-y-auto"
     >
       <div className="handheld-screen__interface__content__body flex flex-col text-left mt-4">
-        <h2>PROJECTS/</h2>
         <ol className="flex flex-col gap-4">
           {PROJECTS.map(({ name, blurb, link, linkLabel }, index) => (
             <li key={name} className="project">

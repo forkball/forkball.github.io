@@ -181,9 +181,6 @@
 
 // projects: name, a short line about it, and a selectable link
 .panel-projects {
-    h2 {
-        margin-bottom: 8px;
-    }
     .project {
         &__name {
             line-height: unset;
