@@ -20,4 +20,8 @@
     @include tablet {
         min-height: 468px;
     }
+    // phones held sideways: the device fits itself to the height instead
+    @include short-landscape {
+        min-height: unset;
+    }
 }

@@ -3,7 +3,14 @@ import React, { forwardRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import image from '../../../../assets/me-sprite.png';
 import './Screen.scss';
-import { BioPanel, BriefPanel, HomePanel, SettingsPanel, SocialPanel } from '../../Panels';
+import {
+  BioPanel,
+  BriefPanel,
+  HomePanel,
+  ProjectsPanel,
+  SettingsPanel,
+  SocialPanel,
+} from '../../Panels';
 import { SECTIONS } from '../../../../constants';
 
 const Screen = forwardRef(
@@ -19,6 +26,7 @@ const Screen = forwardRef(
       changeSetting,
       // perhaps create a panel state
       socialPanelIndex,
+      projectIndex,
     },
     ref,
   ) => {
@@ -46,7 +54,9 @@ const Screen = forwardRef(
     const renderPanel = () => {
       switch (panelSet) {
         case SECTIONS.HOME:
-          return <HomePanel ref={ref} homeIndex={homeIndex} openApp={openApp} />;
+          return (
+            <HomePanel ref={ref} homeIndex={homeIndex} openApp={openApp} more={canScrollDown} />
+          );
         case SECTIONS.SETTINGS:
           return (
             <SettingsPanel
@@ -59,6 +69,15 @@ const Screen = forwardRef(
           );
         case SECTIONS.SOCIALS:
           return <SocialPanel ref={ref} socialPanelIndex={socialPanelIndex} goHome={goHome} />;
+        case SECTIONS.PROJECTS:
+          return (
+            <ProjectsPanel
+              ref={ref}
+              projectIndex={projectIndex}
+              more={canScrollDown}
+              goHome={goHome}
+            />
+          );
         case SECTIONS.SKILLS:
           return <BriefPanel ref={ref} more={canScrollDown} goHome={goHome} />;
         default:
@@ -95,6 +114,7 @@ Screen.propTypes = {
   settingsIndex: PropTypes.number,
   changeSetting: PropTypes.func,
   socialPanelIndex: PropTypes.number,
+  projectIndex: PropTypes.number,
 };
 
 Screen.defaultProps = {
@@ -107,6 +127,7 @@ Screen.defaultProps = {
   settingsIndex: 0,
   changeSetting: () => {},
   socialPanelIndex: 0,
+  projectIndex: 0,
 };
 
 export default Screen;

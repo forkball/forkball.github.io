@@ -3,13 +3,17 @@ import PropTypes from 'prop-types';
 import { Screen } from '../Components';
 import Input from '../Components/Input';
 import SettingsContext from '../SettingsContext';
-import { APPS, HOME_COLUMNS, SECTIONS } from '../../../constants';
+import { APPS, HOME_COLUMNS, PROJECTS, SECTIONS } from '../../../constants';
 import './Device.scss';
 
 // index of the last selectable entry on the socials page (the email)
 const NUMBER_OF_SOCIAL_LINKS = 4;
 const MINIMUM_HORIZONTAL_VIEW_HEIGHT = 900;
 const MAXIMUM_HORIZONTAL_VIEW_WIDTH = 728;
+// phones held sideways are too short to stack the screen above the controls,
+// so they get the landscape device however narrow they are; matches the
+// short-landscape breakpoint in the styles
+const MAXIMUM_SHORT_LANDSCAPE_HEIGHT = 500;
 // screens at least this much wider than tall get the landscape device even
 // when they're tall enough for the portrait one, so wide monitors aren't
 // mostly empty
@@ -63,6 +67,7 @@ function Device({ classes }) {
   const [homeIndex, setHomeIndex] = useState(0);
   const [panelSet, setPanelSet] = useState(SECTIONS.HOME);
   const [socialPanelIndex, setSocialPanelIndex] = useState(0);
+  const [projectIndex, setProjectIndex] = useState(0);
   const [tipMode, setTipMode] = useState(loadTipMode);
   const [showHomeButton, setShowHomeButton] = useState(loadShowHomeButton);
   const [buttonSize, setButtonSize] = useState(loadButtonSize);
@@ -167,6 +172,9 @@ function Device({ classes }) {
       case SECTIONS.SOCIALS:
         if (socialPanelIndex > 0) setSocialPanelIndex(socialPanelIndex - 1);
         break;
+      case SECTIONS.PROJECTS:
+        if (projectIndex > 0) setProjectIndex(projectIndex - 1);
+        break;
       default:
         if (panelRef.current) {
           scroll(-1);
@@ -186,6 +194,9 @@ function Device({ classes }) {
         break;
       case SECTIONS.SOCIALS:
         if (socialPanelIndex < NUMBER_OF_SOCIAL_LINKS) setSocialPanelIndex(socialPanelIndex + 1);
+        break;
+      case SECTIONS.PROJECTS:
+        if (projectIndex < PROJECTS.length - 1) setProjectIndex(projectIndex + 1);
         break;
       default:
         if (panelRef.current) {
@@ -251,6 +262,11 @@ function Device({ classes }) {
           .getElementsByClassName('panel-social')[0]
           .getElementsByTagName('a');
         anchors[socialPanelIndex].click();
+        break;
+      }
+      case SECTIONS.PROJECTS: {
+        const links = document.getElementsByClassName('project__link');
+        if (links[projectIndex]) links[projectIndex].click();
         break;
       }
       default:
@@ -319,6 +335,7 @@ function Device({ classes }) {
           settingsIndex={settingsIndex}
           changeSetting={changeSetting}
           socialPanelIndex={socialPanelIndex}
+          projectIndex={projectIndex}
         />
       </div>
       <div className="handheld__input flex flex-col w-full h-full self-center">
@@ -364,6 +381,7 @@ function Device({ classes }) {
               settingsIndex={settingsIndex}
               changeSetting={changeSetting}
               socialPanelIndex={socialPanelIndex}
+              projectIndex={projectIndex}
             />
           }
         />
@@ -375,6 +393,7 @@ function Device({ classes }) {
   useEffect(() => {
     setSections();
     setSocialPanelIndex(0);
+    setProjectIndex(0);
     setSettingsIndex(0);
   }, [panelSet]);
 
@@ -409,10 +428,12 @@ function Device({ classes }) {
   // portrait screens (tablets held upright) always get the portrait device;
   // the landscape one would be a short strip with empty space above and below
   const landscape = windowWidth > windowHeight;
+  const shortLandscape = landscape && windowHeight <= MAXIMUM_SHORT_LANDSCAPE_HEIGHT;
   if (
-    landscape &&
-    windowWidth > MAXIMUM_HORIZONTAL_VIEW_WIDTH &&
-    (windowHeight < MINIMUM_HORIZONTAL_VIEW_HEIGHT || wideScreen)
+    shortLandscape ||
+    (landscape &&
+      windowWidth > MAXIMUM_HORIZONTAL_VIEW_WIDTH &&
+      (windowHeight < MINIMUM_HORIZONTAL_VIEW_HEIGHT || wideScreen))
   )
     return (
       <SettingsContext.Provider value={displaySettings}>
