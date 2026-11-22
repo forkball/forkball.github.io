@@ -176,3 +176,36 @@
         animation: none;
     }
 }
+
+// projects: name, a short line about it, and a selectable link
+.panel-projects {
+    h2 {
+        margin-bottom: 8px;
+    }
+    .project {
+        &__name {
+            line-height: unset;
+        }
+        &__blurb {
+            font-size: 14px;
+            line-height: 1.4;
+            margin: 4px 0;
+            hyphens: auto;
+        }
+        &__link {
+            color: $color-panel-accent;
+            // a taller tap area than the text, without moving the layout
+            display: inline-block;
+            padding: 8px 0;
+            margin: -8px 0;
+            // scrolled to with room to spare above the floating down arrow
+            scroll-margin: 16px 0 40px;
+            &::before {
+                content: '> ';
+            }
+            &.selected {
+                color: $color-device-secondary;
+            }
+        }
+    }
+}
