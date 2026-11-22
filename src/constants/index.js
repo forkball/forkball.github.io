@@ -19,6 +19,12 @@ export const HOME_COLUMNS = 2;
 // goes, `linkLabel` the text shown for it
 export const PROJECTS = [
   {
+    name: 'HIGHLIGHTERS',
+    blurb: 'A cosmic match-4 puzzle action game.',
+    link: 'https://store.steampowered.com/app/2282080/Highlighters_Cosmic_Puzzle_Action/',
+    linkLabel: 'STEAM',
+  },
+  {
     name: 'ON DECK',
     blurb: 'A smart movie recommendation app.',
     link: 'https://on-deck-ten.vercel.app',
