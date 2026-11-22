@@ -54,7 +54,9 @@ const Screen = forwardRef(
     const renderPanel = () => {
       switch (panelSet) {
         case SECTIONS.HOME:
-          return <HomePanel ref={ref} homeIndex={homeIndex} openApp={openApp} />;
+          return (
+            <HomePanel ref={ref} homeIndex={homeIndex} openApp={openApp} more={canScrollDown} />
+          );
         case SECTIONS.SETTINGS:
           return (
             <SettingsPanel

@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import PageBar from './PageBar';
 import { APPS } from '../../../constants';
@@ -104,7 +104,15 @@ PixelIcon.propTypes = {
 };
 
 // home screen: a grid of apps, one per section, opened with A or a tap
-const HomePanel = forwardRef(({ homeIndex, openApp }, ref) => {
+const HomePanel = forwardRef(({ homeIndex, openApp, more }, ref) => {
+  // short screens can't show every row, so keep the selected app in view
+  useEffect(() => {
+    const panel = ref && ref.current;
+    if (!panel) return;
+    const selected = panel.querySelector('.app-tile--selected');
+    if (selected) selected.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }, [homeIndex]);
+
   return (
     <div
       ref={ref}
@@ -126,7 +134,7 @@ const HomePanel = forwardRef(({ homeIndex, openApp }, ref) => {
           </li>
         ))}
       </ol>
-      <PageBar hints={[['A', 'SELECT']]} blinkHints />
+      <PageBar hints={[['A', 'SELECT']]} blinkHints more={more} />
     </div>
   );
 });
@@ -134,11 +142,13 @@ const HomePanel = forwardRef(({ homeIndex, openApp }, ref) => {
 HomePanel.propTypes = {
   homeIndex: PropTypes.number,
   openApp: PropTypes.func,
+  more: PropTypes.bool,
 };
 
 HomePanel.defaultProps = {
   homeIndex: 0,
   openApp: () => {},
+  more: false,
 };
 
 export default HomePanel;

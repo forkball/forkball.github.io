@@ -53,6 +53,8 @@
     width: 100%;
     padding: 6px 0;
     color: $color-panel-accent;
+    // scrolled to with room to spare above the floating down arrow
+    scroll-margin: 16px 0 40px;
     &__frame {
         display: flex;
         padding: 10px;
