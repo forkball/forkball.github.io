@@ -10,6 +10,10 @@ import './Device.scss';
 const NUMBER_OF_SOCIAL_LINKS = 4;
 const MINIMUM_HORIZONTAL_VIEW_HEIGHT = 900;
 const MAXIMUM_HORIZONTAL_VIEW_WIDTH = 728;
+// phones held sideways are too short to stack the screen above the controls,
+// so they get the landscape device however narrow they are; matches the
+// short-landscape breakpoint in the styles
+const MAXIMUM_SHORT_LANDSCAPE_HEIGHT = 500;
 // screens at least this much wider than tall get the landscape device even
 // when they're tall enough for the portrait one, so wide monitors aren't
 // mostly empty
@@ -424,10 +428,12 @@ function Device({ classes }) {
   // portrait screens (tablets held upright) always get the portrait device;
   // the landscape one would be a short strip with empty space above and below
   const landscape = windowWidth > windowHeight;
+  const shortLandscape = landscape && windowHeight <= MAXIMUM_SHORT_LANDSCAPE_HEIGHT;
   if (
-    landscape &&
-    windowWidth > MAXIMUM_HORIZONTAL_VIEW_WIDTH &&
-    (windowHeight < MINIMUM_HORIZONTAL_VIEW_HEIGHT || wideScreen)
+    shortLandscape ||
+    (landscape &&
+      windowWidth > MAXIMUM_HORIZONTAL_VIEW_WIDTH &&
+      (windowHeight < MINIMUM_HORIZONTAL_VIEW_HEIGHT || wideScreen))
   )
     return (
       <SettingsContext.Provider value={displaySettings}>

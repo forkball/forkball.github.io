@@ -41,6 +41,21 @@ $page-bar-height: 28px;
     max-height: none;
   }
 
+  // phones held sideways: fill the space beside the pads, both ways
+  @include short-landscape {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    flex: 1 1 auto;
+    margin: 0px;
+    padding: 6px;
+    .handheld-screen__interface {
+      width: 100%;
+      max-width: 432px;
+      height: 100%;
+    }
+  }
+
   &__interface {
     background-color: $color-panel-primary;
     width: 432px;
@@ -240,5 +255,25 @@ $page-bar-height: 28px;
     &:nth-child(2) { top: -7px; right: -7px; }
     &:nth-child(3) { bottom: -7px; left: -7px; }
     &:nth-child(4) { bottom: -7px; right: -7px; }
+  }
+}
+
+// small phones held sideways: the screen between the pads is as narrow as on
+// the smallest upright phones, so the entry header shrinks to match
+@include short-landscape {
+  @media (max-width: 600px) {
+    .dex-entry {
+      gap: 8px;
+    }
+    .dex-entry__stat {
+      gap: 6px;
+    }
+    .dex-entry__portrait img {
+      width: 77px;
+      height: 72px;
+    }
+    .dex-entry__info p {
+      font-size: 11px;
+    }
   }
 }

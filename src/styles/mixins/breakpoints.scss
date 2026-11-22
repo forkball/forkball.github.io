@@ -3,6 +3,8 @@ $tablet: 768px;
 $horizontal-tablet-height: 800px;
 $desktop: 1152px;
 $max-desktop: 1600px;
+/* phones held sideways; matches MAXIMUM_SHORT_LANDSCAPE_HEIGHT in Device.js */
+$short-landscape-height: 500px;
 
 @mixin mobile {
   @media only screen and (max-width: #{$tablet - 1}) {
@@ -25,6 +27,12 @@ $max-desktop: 1600px;
 
 @mixin max-desktop {
   @media only screen and (min-width: #{$max-desktop}) {
+    @content;
+  }
+}
+
+@mixin short-landscape {
+  @media only screen and (orientation: landscape) and (max-height: #{$short-landscape-height}) {
     @content;
   }
 }

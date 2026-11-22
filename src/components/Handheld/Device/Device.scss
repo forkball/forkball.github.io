@@ -82,6 +82,23 @@
         @include tablet {
             padding: 8px;
         }
+        // phones held sideways: fill the window edge to edge, with no title,
+        // so the screen gets every pixel of height the controls leave
+        @include short-landscape {
+            width: 100%;
+            max-width: unset;
+            height: 100vh;
+            height: 100dvh;
+            padding: 4px 8px;
+            border-left: unset;
+            border-radius: 0px;
+            h1 {
+                display: none;
+            }
+            .handheld__input {
+                height: 100%;
+            }
+        }
     }
     &__screen {
         padding: 8px;
