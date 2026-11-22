@@ -30,31 +30,9 @@ export const PROJECTS = [
     linkLabel: 'VISIT',
   },
   {
-    name: 'DARK ISLE',
-    link: 'https://dark-isle.vercel.app',
-    linkLabel: 'VISIT',
-  },
-  {
-    name: 'MALONE THE CHEMIST',
-    link: 'https://malone-the-chemist.vercel.app',
-    linkLabel: 'VISIT',
-  },
-  {
     name: 'FORKBALL.CA',
     blurb: 'This site! A handheld you can browse with the D-pad.',
     link: 'https://github.com/forkball/forkball.github.io',
-    linkLabel: 'SOURCE',
-  },
-  {
-    name: 'FACT BOY',
-    blurb: 'Your friendly neighbourhood Fact Boy, with facts on any topic you could imagine.',
-    link: 'https://github.com/forkball/Fact-Boy',
-    linkLabel: 'SOURCE',
-  },
-  {
-    name: 'TOWER DEFENSE',
-    blurb: "A medieval tower defense where you conquer your opponent's castle.",
-    link: 'https://github.com/forkball/COMP2501-FinalProject',
     linkLabel: 'SOURCE',
   },
 ];
