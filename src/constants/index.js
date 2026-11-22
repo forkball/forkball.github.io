@@ -30,10 +30,4 @@ export const PROJECTS = [
     link: 'https://draft-party-topaz.vercel.app',
     linkLabel: 'VISIT',
   },
-  {
-    name: 'FORKBALL.CA',
-    blurb: 'This site! A handheld you can browse with the D-pad.',
-    link: 'https://github.com/forkball/forkball.github.io',
-    linkLabel: 'SOURCE',
-  },
 ];
