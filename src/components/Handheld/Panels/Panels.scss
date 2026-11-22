@@ -181,6 +181,11 @@
 
 // projects: name, a short line about it, and a selectable link
 .panel-projects {
+    // no blank space after the last project: when the whole list fits, the
+    // page shouldn't scroll or show the down arrow
+    .handheld-screen__interface__content__body {
+        margin-bottom: 0;
+    }
     .project {
         &__name {
             line-height: unset;
