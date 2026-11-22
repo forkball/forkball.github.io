@@ -40,8 +40,14 @@ const Screen = forwardRef(
     useEffect(() => {
       const content = ref.current;
       if (!content) return undefined;
-      const update = () =>
-        setCanScrollDown(content.scrollTop + content.clientHeight < content.scrollHeight - 4);
+      // the panel's bottom padding is empty space, not more to read, so it
+      // doesn't count: otherwise a page that fits shows the arrow anyway
+      const update = () => {
+        const padding = parseFloat(window.getComputedStyle(content).paddingBottom) || 0;
+        setCanScrollDown(
+          content.scrollTop + content.clientHeight < content.scrollHeight - padding - 4,
+        );
+      };
       update();
       content.addEventListener('scroll', update);
       window.addEventListener('resize', update);
